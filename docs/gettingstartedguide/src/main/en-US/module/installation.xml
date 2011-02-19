@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+]>
+<chapter id="installation">
+  <title>Installation</title>   
+       
+	<para> 
+	This section describes the installation procedure for SAVARA tools and runtime modules.
+	</para>
+       
+       <section>
+       		<title>Prerequisites</title>
+       		<para>
+       		The pre-requisites for the SAVARA Eclipse Tools are:
+       		</para>
+       		<orderedlist>
+       			<listitem>Eclipse JEE (3.6 or higher)  <ulink url="http://www.eclipse.org">http://www.eclipse.org</ulink></listitem>
+       			<listitem>JBoss Tools (3.2 or higher) <ulink url="http://www.jboss.org/tools">http://www.jboss.org/tools</ulink>
+       			available from an update site</listitem>
+       		</orderedlist>
+
+       		<para>
+       		The pre-requisites for the SAVARA JBoss server integration are:
+       		</para>
+       		<orderedlist>
+       			<listitem>JBossAS (5.1.0.GA or higher) <ulink url="http://www.jboss.org/jbossas">http://www.jboss.org/jbossas</ulink></listitem>
+       			<listitem>JBossAS (4.8 or higher) <ulink url="http://www.jboss.org/jbossesb">http://www.jboss.org/jbossesb</ulink></listitem>
+       			<listitem>SAVARA (version 2.0.0 or higher), available from <ulink url="http://www.jboss.org/savara/downloads">http://www.jboss.org/savara/downloads</ulink></listitem>
+       		</orderedlist>
+       </section>
+       
+       <section>
+       		<title>Installation Instructions</title>
+       		<para>
+       		The installation instructions for the SAVARA Eclipse tools are:
+       		</para>
+       		<orderedlist>
+       			<listitem>
+       			Eclipse
+       			<para>
+       			Download the latest version of Eclipse JEE, and install in your environment.
+       			</para>
+       			</listitem>
+       			
+       			<listitem>
+       			BPMN Modeller
+       			<para>
+       			When Eclipse has been lauched, go to the <emphasis>Help->Install New Software..</emphasis>
+       			menu item. Select the Eclipse update site
+       			for the version of Eclipse (e.g. Helios). Within the SOA Development
+       			category, select the BPMN Project Feature. Follow the instructions to accept
+       			the license and then restart Eclipse after the plugins have been
+       			installed.
+       			</para>
+       			</listitem>
+       			<listitem>
+       			JBoss Tools
+       			<para>
+       			Start up your Eclipse environment, and go to the <emphasis>Help->Install New Software..</emphasis>
+       			menu item. Select the appropriate update site URL from the JBoss Tools download
+       			page, and enter it into the top text field in the dialog window, and press the
+       			<emphasis>Add</emphasis> button. Once the contents of the update site is available,
+       			then select the appropriate components and follow the instructions to install
+       			them within your Eclipse environment.
+       			</para>
+       			<para>
+       			The <emphasis>JBoss Savara Tools</emphasis> feature should be selected from the
+       			<emphasis>SOA Development</emphasis> category.
+       			</para>
+       			<para>
+       			If you wish to view the generated BPEL using a BPEL editor, rather than
+       			XML, then you should also select the <emphasis>JBoss BPEL Editor</emphasis> from the
+       			<emphasis>SOA Development</emphasis> category.
+       			</para>
+       			<para>
+       			NOTE: If you don't install the BPEL Editor, then you will have to install
+       			GMF. This can be found on the Helios update site, under the <emphasis>Modeling</emphasis>
+       			category. Select the <emphasis>Graphical Modeling Framework</emphasis> entry, and
+       			following the instructions to install.
+       			</para>
+
+       			<para>
+       			It is also recommended that you install the JBoss WebServices Tools, and JBossAS Tools,
+       			from the All category. These are required to define and launch a JBossAS
+       			server from within Eclipse, generate a JAX-WS web service from a WSDL definition,
+       			and test a Web Service.
+       			</para>
+       			</listitem>
+
+       		</orderedlist>
+
+       		<para>
+       		The installation instructions for the SAVARA JBoss server integration are:
+       		</para>
+       		<orderedlist>
+       			<listitem>
+       			JBossAS
+       			<para>
+       			Download the latest version and follow its installation instructions.
+       			</para>
+       			</listitem>
+       			
+       			<listitem>
+       			JBossESB
+       			<para>
+       			Download the latest version and follow the instructions for installing it
+       			into the JBossAS environment.
+       			</para>
+       			</listitem>
+       			
+       			<listitem>
+       			SAVARA
+       			<para>
+       			Unpack the SAVARA distribution and edit the
+       			<filename>deployment.properties</filename> file
+       			in this <filename>${SAVARA}/install</filename> folder.
+       			Set the <emphasis>org.jboss.as.home</emphasis> property to the root
+       			directory where the JBossAS environment is located, and change the
+       			<emphasis>org.jboss.as.config</emphasis> property from default
+       			if you wish to start your JBossAS using a different configuration. Set the
+       			<emphasis>org.jboss.esb.home</emphasis> property to the root directory
+       			where the JBossESB environment is located.
+       			</para>
+       			<para>
+       			Start a command window and execute the command <emphasis>ant deploy</emphasis>.
+       			</para>
+       			</listitem>
+
+       		</orderedlist>
+       </section>
+
+	<section>
+		<title>Importing Samples into Eclipse</title>
+
+			<para>
+		Once the SAVARA Eclipse Tool distribution has been correctly installed, if you wish to try out 
+		any of the examples then the following steps should be followed to import the relevant
+		projects into the previously configured Eclipse environment.
+			</para>
+
+  <orderedlist>
+	<listitem>
+		<para>
+Select the 'Import...' menu item, associated with the popup menu on the background of the left 
+panal (Navigator or Package depending on perspective being viewed).
+		</para>
+		<imageobject>
+			<imagedata fileref="en-US/images/ImportMenu.jpg" align="center" width="2in" />
+		</imageobject>
+	</listitem>
+	<listitem>
+		<para>
+When the import dialog appears, select the <emphasis>General->ExistingProject from Workspace</emphasis> 
+option and press the 'Next' button.
+		</para>
+		<imageobject>
+			<imagedata fileref="en-US/images/ImportDialog.jpg" align="center" width="4in" />
+		</imageobject>
+	</listitem>
+	<listitem>
+		<para>
+Ensuring that the 'Select root directory' radio button is selected, press the 'Browse' button and 
+navigate to the <filename>${SAVARA-Tools}/samples</filename> folder, then press 'Ok'.
+		</para>
+		<imageobject>
+			<imagedata fileref="en-US/images/ImportFileDialog.jpg" align="center" width="3in" />
+		</imageobject>
+	</listitem>
+	<listitem>
+		<para>
+All of the Eclipse projects contained within the <filename>${SAVARA-Tools}/samples</filename> directory structure 
+will be listed. Press the 'Finish' button to import them all.
+		</para>
+		<imageobject>
+			<imagedata fileref="en-US/images/ImportProjectsDialog.jpg" align="center" width="4in" />
+		</imageobject>
+		<para>
+		Once imported, the Eclipse navigator will list the sample projects:
+		</para>
+		<imageobject>
+			<imagedata fileref="en-US/images/ImportedProject.jpg" align="center" width="2in" />
+		</imageobject>
+	</listitem>
+     </orderedlist>
+
+	</section>
+  
+</chapter>

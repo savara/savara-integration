@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server>
+
+<mbean code="org.jboss.mq.server.jmx.Queue"
+	 name="jboss.esb.trailblazer.destination:service=Queue,name=esb-tb-creditAgencyQueue">
+  <depends optional-attribute-name="DestinationManager">
+  	jboss.mq:service=DestinationManager
+  </depends>
+</mbean>
+
+<mbean code="org.jboss.mq.server.jmx.Queue"
+	 name="jboss.esb.trailblazer.destination:service=Queue,name=esb-tb-creditAgencyQueue_reply">
+  <depends optional-attribute-name="DestinationManager">
+  	jboss.mq:service=DestinationManager
+  </depends>
+</mbean>
+
+<mbean code="org.jboss.mq.server.jmx.Queue"
+	 name="jboss.esb.trailblazer.destination:service=Queue,name=jms-tb-jmsBankRequestQueue">
+  <depends optional-attribute-name="DestinationManager">
+  	jboss.mq:service=DestinationManager
+  </depends>
+</mbean>
+
+<mbean code="org.jboss.mq.server.jmx.Queue"
+	 name="jboss.esb.trailblazer.destination:service=Queue,name=esb-tb-jmsBankRequestQueue">
+  <depends optional-attribute-name="DestinationManager">
+  	jboss.mq:service=DestinationManager
+  </depends>
+</mbean>
+
+<mbean code="org.jboss.mq.server.jmx.Queue"
+	 name="jboss.esb.trailblazer.destination:service=Queue,name=esb-tb-jmsBankResponseQueue">
+  <depends optional-attribute-name="DestinationManager">
+  	jboss.mq:service=DestinationManager
+  </depends>
+</mbean>
+
+<mbean code="org.jboss.mq.server.jmx.Queue"
+	 name="jboss.esb.trailblazer.destination:service=Queue,name=esb-tb-jmsBankGatewayResponseQueue">
+  <depends optional-attribute-name="DestinationManager">
+  	jboss.mq:service=DestinationManager
+  </depends>
+</mbean>
+
+<mbean code="org.jboss.mq.server.jmx.Queue"
+	 name="jboss.esb.trailblazer.destination:service=Queue,name=esb-tb-fileBankRequestQueue">
+  <depends optional-attribute-name="DestinationManager">
+  	jboss.mq:service=DestinationManager
+  </depends>
+</mbean>
+
+<mbean code="org.jboss.mq.server.jmx.Queue"
+	 name="jboss.esb.trailblazer.destination:service=Queue,name=esb-tb-fileBankResponseQueue">
+  <depends optional-attribute-name="DestinationManager">
+  	jboss.mq:service=DestinationManager
+  </depends>
+</mbean>
+
+<mbean code="org.jboss.mq.server.jmx.Queue"
+	 name="jboss.esb.trailblazer.destination:service=Queue,name=esb-tb-customerNotifier">
+  <depends optional-attribute-name="DestinationManager">
+  	jboss.mq:service=DestinationManager
+  </depends>
+</mbean>
+
+</server>

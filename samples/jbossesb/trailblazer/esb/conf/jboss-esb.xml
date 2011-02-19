@@ -1,0 +1,140 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<jbossesb xmlns="http://anonsvn.labs.jboss.com/labs/jbossesb/trunk/product/etc/schemas/xml/jbossesb-1.0.1.xsd" 
+	parameterReloadSecs="5000">
+
+	<providers>
+		<jms-provider name="JBossMQ" connection-factory="ConnectionFactory" 
+					jndi-context-factory="org.jnp.interfaces.NamingContextFactory"
+					jndi-URL="localhost">
+			<jms-bus busid="creditAgencyRequest">
+				<jms-message-filter dest-type="QUEUE" dest-name="queue/esb-tb-creditAgencyQueue" selector="function='request'"/>
+			</jms-bus>
+			<jms-bus busid="jmsBankRequest">
+				<jms-message-filter dest-type="QUEUE" dest-name="queue/esb-tb-jmsBankRequestQueue"/>
+			</jms-bus>			
+			<jms-bus busid="fileBankRequest">
+				<jms-message-filter dest-type="QUEUE" dest-name="queue/esb-tb-fileBankRequestQueue"/>
+			</jms-bus>			
+			<jms-bus busid="jmsBankResponseGateway">
+				<jms-message-filter dest-type="QUEUE" dest-name="queue/esb-tb-jmsBankGatewayResponseQueue"/>
+			</jms-bus>			
+			<jms-bus busid="jmsBankResponseListener">
+				<jms-message-filter dest-type="QUEUE" dest-name="queue/esb-tb-jmsBankResponseQueue"/>
+			</jms-bus>
+			<jms-bus busid="fileBankResponseListener">
+				<jms-message-filter dest-type="QUEUE" dest-name="queue/esb-tb-fileBankResponseQueue"/>
+			</jms-bus>
+			<jms-bus busid="customerNotifier">
+				<jms-message-filter dest-type="QUEUE" dest-name="queue/esb-tb-customerNotifier"/>
+			</jms-bus>
+		</jms-provider>
+
+        <fs-provider name="FSprovider1">
+          	<fs-bus busid="fileBankChannel" >
+          		<fs-message-filter
+          			directory="/tmp/output"
+          			input-suffix=".quote"
+          			work-suffix=".esbWorking"
+          			post-delete="true"
+          			error-delete="true" />
+          	</fs-bus>
+        </fs-provider>
+	</providers>
+	<services>    
+		
+		<service category="tbCreditAGency" name="creditagency" description="Credit Agency Service">
+			<listeners>
+				<jms-listener name="trailblazer-jmscreditagency"
+							  busidref="creditAgencyRequest"
+							  maxThreads="1"/>							  
+			</listeners>
+			<actions>
+				<action class="org.jboss.soa.esb.samples.trailblazer.actions.CreditCheckXMLToCSVActions"
+					process="handle" name="XMLToCSV">
+				</action>
+                                <!--action name="transform-from-csv" class="org.jboss.soa.esb.actions.converters.SmooksTransformer">
+                                      <property name="resource-config" value="/smooks-xml2csv.xml" />
+                                </action-->
+
+				<action class="org.jboss.soa.esb.samples.trailblazer.actions.CreditAgencyActions"
+					process="processCreditRequest" name="fido">
+				</action>
+                                <action name="transform-from-csv" class="org.jboss.soa.esb.actions.converters.SmooksTransformer">
+                                       <property name="resource-config" value="/smooks-csv2xml.xml" />
+                                </action>
+				<!--action class="org.jboss.soa.esb.samples.trailblazer.actions.CreditCheckCSVToXMLActions"
+					process="handle" name="CSVToXML">
+				</action-->
+			</actions>
+		</service>
+		<service category="tbBanks" name="jmsBank" description="JMS Bank Service">
+			<listeners>
+				<jms-listener name="trailblazer-jmsbankreq"
+							  busidref="jmsBankRequest"
+							  maxThreads="1"/>							  
+				</listeners>
+			<actions mep="OneWay" >
+				<action class="org.jboss.soa.esb.actions.routing.JMSRouter"
+								name="jmsBankAction" >
+     				<property name="jndiName" value="queue/jms-tb-jmsBankRequestQueue" />
+     				<property name="unwrap" value="true" />
+				</action>
+			</actions>
+		</service>
+		<service category="tbJmsbank" name="jmsbankreplies" description="Trailblazer JMS Bank Reply Service">
+			<listeners>
+				<jms-listener name="trailblazer-jmsbankrespgw"
+					busidref="jmsBankResponseGateway"
+					maxThreads="1"
+					is-gateway="true"/>
+				<jms-listener name="trailblazer-jmsbankreplies"
+							  busidref="jmsBankResponseListener"
+							  maxThreads="1"/> 
+			</listeners>
+			<actions>
+				<action class="org.jboss.soa.esb.samples.trailblazer.actions.BankResponseActions"
+						process="processResponseFromJMSBank" name="pepe"/>
+			</actions>
+		</service>
+		<service category="tbBanks" name="fileBank" description="File Bank Service">
+			<listeners>
+				<jms-listener name="trailblazer-filebankreq"
+							  busidref="fileBankRequest"
+							  maxThreads="1"/>							  
+				</listeners>
+			<actions mep="OneWay" >
+				<action class="org.jboss.soa.esb.samples.trailblazer.actions.FileBankRequestActions"
+								process="processFileBankRequest" name="fileBankRequestAction" >
+				</action>
+			</actions>
+		</service>
+		<service category="tbFilebank" name="filebankreplies" description="Trailblazer File Bank Reply Service">
+			<listeners>
+            	<fs-listener name="FileGateway"
+            		busidref="fileBankChannel"
+            		maxThreads="1"
+            		is-gateway="true"
+            		schedule-frequency="10" />
+				<jms-listener name="trailblazer-filebankreplies"
+							  busidref="fileBankResponseListener"
+							  maxThreads="1"/> 
+			</listeners>
+			<actions>
+				<action class="org.jboss.soa.esb.samples.trailblazer.actions.BankResponseActions"
+						process="processResponseFromFileBank" name="filebankin"/>
+			</actions>
+		</service>
+		<service category="notifiers" name="customer" description="Customer Notification Service">
+			<listeners>
+				<jms-listener name="trailblazer-custnotifier"
+							  busidref="customerNotifier"
+							  maxThreads="1"/>							  
+				</listeners>
+			<actions mep="OneWay" >
+				<action class="org.jboss.soa.esb.samples.trailblazer.actions.NotifyCustomerActions"
+						process="notifyCustomer" name="notify"/>
+			</actions>
+		</service>
+	</services>
+	
+</jbossesb>

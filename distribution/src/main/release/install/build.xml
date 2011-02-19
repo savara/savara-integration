@@ -1,0 +1,82 @@
+<project name="SAVARA_Installer" default="deploy" basedir=".">
+
+	<!-- Set deployment properties filename -->
+	<property name="org.jboss.as.deployment.properties" location="deployment.properties"/>
+
+	<!-- Load Build Properties File -->
+	<property file="${org.jboss.as.deployment.properties}"/>
+	
+    <property name="server.dir" value="${org.jboss.as.home}/server/${org.jboss.as.config}"/>
+    <property name="conf.dir" value="${server.dir}/conf"/>
+    <property name="deploy.dir" value="${server.dir}/deploy"/>
+    <property name="deployers.dir" value="${server.dir}/deployers"/>
+    <property name="server.lib.dir" value="${server.dir}/lib"/>
+    
+    <property name="modules" value="../modules" />
+
+	<target name="check.deploy.props">
+		<condition property="as.configured">
+			<and>
+				<isset property="org.jboss.as.home"/>
+				<isset property="org.jboss.as.config"/>
+			</and>
+		</condition>
+
+		<fail unless="as.configured" message="Cannot determine target deployment, please check deployment.properties"/>
+	</target>
+
+    <target name="deploy" depends="check.deploy.props,register-jbossesb-interceptor,register-jbossws-native-interceptor"
+						description="Deploys SAVARA to the server">
+        <echo message="Deploy SAVARA to JBossAS" />
+    	<copy todir="${deploy.dir}/savara-jboss.sar">
+    		<fileset dir="${modules}/savara-jboss.sar"/>
+    	</copy>
+    	<copy todir="${deploy.dir}/savara-jbossesb.esb">
+    		<fileset dir="${modules}/savara-jbossesb.esb"/>
+    	</copy>
+    	<copy todir="${deploy.dir}/savara-jbossws-native.sar">
+    		<fileset dir="${modules}/savara-jbossws-native.sar"/>
+    	</copy>
+    </target>
+
+    <target name="undeploy" depends="unregister-jbossesb-interceptor,unregister-jbossws-native-interceptor"
+    					description="Undeploys SAVARA">
+		<echo message="Undeploy the SAVARA from JBossAS" />
+        <delete dir="${deploy.dir}/savara-jboss.sar" />
+        <delete dir="${deploy.dir}/savara-jbossesb.esb" />
+        <delete dir="${deploy.dir}/savara-jbossws-native.sar" />
+    </target>
+
+    <target name="register-jbossesb-interceptor">
+		<echo message="register the jbossesb interceptor" />
+        <delete file="${deployers.dir}/esb.deployer/jbossesb-properties.xml" />
+		<copy file="${modules}/conf/jbossesb/jbossesb-properties-savara.xml" tofile="${deployers.dir}/esb.deployer/jbossesb-properties.xml" />
+    </target>
+
+    <target name="unregister-jbossesb-interceptor">
+		<echo message="unregister the jbossesb interceptor" />
+        <delete file="${deployers.dir}/esb.deployer/jbossesb-properties.xml" />
+		<copy file="${modules}/conf/jbossesb/jbossesb-properties-original.xml" tofile="${deployers.dir}/esb.deployer/jbossesb-properties.xml" />
+    </target>
+
+    <target name="register-jbossws-native-interceptor">
+		<echo message="register the jbossws-native interceptor" />
+        <delete file="${deployers.dir}/jbossws.deployer/META-INF/standard-jaxws-client-config.xml" />
+        <delete file="${deployers.dir}/jbossws.deployer/META-INF/standard-jaxws-endpoint-config.xml" />
+		<copy file="${modules}/conf/jbossws-native/standard-jaxws-client-config-savara.xml"
+						tofile="${deployers.dir}/jbossws.deployer/META-INF/standard-jaxws-client-config.xml" />
+		<copy file="${modules}/conf/jbossws-native/standard-jaxws-endpoint-config-savara.xml"
+						tofile="${deployers.dir}/jbossws.deployer/META-INF/standard-jaxws-endpoint-config.xml" />
+    </target>
+
+    <target name="unregister-jbossws-native-interceptor">
+		<echo message="unregister the jbossws-native interceptor" />
+        <delete file="${deployers.dir}/jbossws.deployer/META-INF/standard-jaxws-client-config.xml" />
+        <delete file="${deployers.dir}/jbossws.deployer/META-INF/standard-jaxws-endpoint-config.xml" />
+		<copy file="${modules}/conf/jbossws-native/standard-jaxws-client-config-original.xml"
+						tofile="${deployers.dir}/jbossws.deployer/META-INF/standard-jaxws-client-config.xml" />
+		<copy file="${modules}/conf/jbossws-native/standard-jaxws-endpoint-config-original.xml"
+						tofile="${deployers.dir}/jbossws.deployer/META-INF/standard-jaxws-endpoint-config.xml" />
+    </target>
+	
+</project>

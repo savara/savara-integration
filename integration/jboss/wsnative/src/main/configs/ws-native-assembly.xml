@@ -1,0 +1,27 @@
+<assembly xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/assembly-1.1.0-SNAPSHOT.xsd">
+  <id>dist</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <includeBaseDirectory>true</includeBaseDirectory>
+  <fileSets>
+    <fileSet>
+      <directory>src/main/configs</directory>
+      <outputDirectory>/</outputDirectory>
+      <excludes>
+        <exclude>ws-native-assembly.xml</exclude>
+      </excludes>
+    </fileSet>
+  </fileSets>
+  
+     <dependencySets>
+        <dependencySet>
+            <outputDirectory>/lib</outputDirectory>
+            <includes>
+               <include>org.savara.integration:savara-jbossws-native</include>
+            </includes>
+        </dependencySet>
+    </dependencySets>
+  
+</assembly>

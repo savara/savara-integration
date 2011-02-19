@@ -1,0 +1,268 @@
+<project name="TRAILBLAZER" default="war" basedir=".">	
+
+	<!-- UPDATE THIS WITH YOUR JBOSS_HOME AND SERVER -->
+	<property name="trailblazer.dir" location="."/>
+	<property name="install.dir" value="../../../install"/>
+	<property file="${install.dir}/deployment.properties"/>
+
+    <property name="esb.home.dir" value="${org.jboss.esb.home}"/>
+	<property name="org.jboss.as.home" value="${org.jboss.as.home}"/>
+	<property name="org.jboss.as.config" value="${org.jboss.as.config}"/>
+
+	<!-- properties for the esb part of the trailblazer -->
+	<property name="esb.dest"     	value="${basedir}/esb/build"/>
+	<property name="classes.dir" 	value="${basedir}/esb/build/classes"/>
+	<property name="esb.testclasses.dir"  value="${basedir}/esb/build/classes/tests/"/>
+	<property name="esb.src.dir"    value="${basedir}/esb/src"/>
+	<property name="esb.test.dir"   value="${basedir}/esb/test"/>
+	<property name="esb.lib.dir"   	value="${basedir}/esb/lib"/>
+	<property name="report.dir" 	value="${basedir}/esb/build/tests"/>
+
+	<!-- properties for the client(web) part of the trailblazer -->
+	<property name="client.dir" value="${basedir}/client"/>
+	<property name="esb.samples.trailblazer.client.dest" 
+		value="${basedir}/client/build"/>
+	<property name="esb.samples.trailblazer.client.classes.dir" 
+		value="${basedir}/client/build/classes"/>
+	<property name="esb.samples.trailblazer.client.testclasses.dir" 
+		value="${basedir}/client/build/classes/tests/"/>
+	<property name="esb.samples.trailblazer.client.src.dir" 
+		value="${basedir}/client/src"/>
+	<property name="esb.samples.trailblazer.client.test.dir" 
+		value="${basedir}/client/test"/>
+	<property name="esb.samples.trailblazer.client.lib.dir"	
+		value="${basedir}/client/lib"/>
+	<property name="esb.samples.trailblazer.client.tests.report.dir"
+		value="${basedir}/client/build/tests"/>
+
+	<property environment="env" />
+
+	<property name="esb.lib.file" value="jbossesb-rosetta.jar"/>
+	<property name="soa.esb.lib.dist.dir" value="${esb.home.dir}/lib"/>
+	<property name="soa.esb.lib.src.dir" value="../../build/jbossesb/lib"/>
+
+	<available file="${esb.lib.file}"
+            filepath="${soa.esb.lib.dist.dir}"
+            property="soa.esb.lib.dir"
+            value="${soa.esb.lib.dist.dir}"/>
+
+	<available file="${esb.lib.file}"
+            filepath="${soa.esb.lib.src.dir}"
+            property="soa.esb.lib.dir"
+            value="${soa.esb.lib.src.dir}"/>
+
+	<property name="soa.esb.lib.ext.dir" value="${soa.esb.lib.dir}/ext"/>
+	
+	<property name="target-server" value="${org.jboss.as.home}/server/${org.jboss.as.config}" />
+	
+	<!-- classpath -->
+	<path id="esb.samples.trailblazer.esb.classpath">
+		<fileset dir="${soa.esb.lib.dir}/ext" includes="*.jar"/>
+		<fileset dir="${esb.lib.dir}/ext" includes="*.jar"/>
+		<fileset dir="${org.jboss.as.home}/client" includes="jbossall-client.jar jbossws-client.jar mail.jar"/>
+		<fileset dir="${soa.esb.lib.dir}" includes="*.jar"/>
+		<fileset dir="${esb.samples.trailblazer.client.lib.dir}/ext" includes="*.jar"/>
+	</path>
+
+	<!-- classpath for running the listener-->
+	<path id="esb.samples.trailblazer.esb.classpath.run">
+		<fileset dir="${soa.esb.lib.ext.dir}"
+			includes="jaxr-api*.jar,scout*.jar,juddi*.jar"/>
+		<fileset dir="${esb.dest}/dist" includes="trailblazer-esb.jar"/>
+		<fileset dir="${esb.home.dir}/lib/ext" includes="*.jar" excludes="jaxr-api*.jar,scout*.jar,juddi*.jar"/>
+		<fileset dir="${soa.esb.lib.ext.dir}" includes="*.jar" excludes="jaxr-api*.jar,scout*.jar,juddi*.jar"/>
+		<fileset dir="${org.jboss.as.home}/client" includes="jbossall-client.jar jbossws-client.jar mail.jar"/>
+		<fileset dir="${soa.esb.lib.dir}" includes="*.jar"/>
+		<fileset dir="${esb.lib.dir}/ext" includes="*.jar"/>
+		<!-- for finding the jbossesb-properties.xml file -->
+		<pathelement location="${basedir}"/>
+	</path>
+
+	<path id="esb.samples.trailblazer.esb.classpath.client">
+		<fileset dir="${soa.esb.lib.ext.dir}"/>
+		<fileset dir="${esb.lib.dir}/ext" includes="*.jar"/>
+		<fileset dir="${org.jboss.as.home}/client" includes="jboss-jaxrpc.jar jbossall-client.jar jbossws-client.jar mail.jar"/>
+		<fileset dir="${soa.esb.lib.dir}" includes="*.jar"/>
+		<fileset dir="${esb.samples.trailblazer.client.lib.dir}/ext" includes="*.jar"/>
+		<fileset dir="${esb.dest}/dist" includes="trailblazer-esb.jar"/>
+		<pathelement location="${classes.dir}"/>
+	</path>
+
+	<target name="clean">
+		<delete dir="${esb.dest}"/>
+		<delete dir="${esb.samples.trailblazer.client.dest}"/>
+	</target>
+
+    <target name="messaging-config">
+		<property name="org.jboss.as.deploy.dir"
+			value="${org.jboss.as.home}/server/${org.jboss.as.config}/deploy"/>
+		<condition property="messaging.present">
+			<available file="${org.jboss.as.deploy.dir}/jboss-messaging"/>
+		</condition>
+		<condition property="messaging.present">
+			<available file="${org.jboss.as.deploy.dir}/jboss-messaging.sar"/>
+        </condition>
+
+        <condition property="jbossmq.present">
+            <not>
+                <isset property="messaging.present"/>
+            </not>
+        </condition>
+    </target>
+	
+	<!-- dependencies specific to JBoss Messaging -->
+    <target name="messaging-dependencies" if="messaging.present">
+        <property name="jms.service.file" value="jbm-queue-service.xml"/>
+        <property name="jms.description" value="JBoss Messaging"/>
+    </target>
+
+    <!-- dependencies specific to JBoss MQ -->
+    <target name="jbossmq-dependencies" if="jbossmq.present">
+        <property name="jms.service.file" value="jbmq-queue-service.xml"/>
+        <property name="jms.description" value="JBoss MQ"/>
+    </target>
+
+	<!-- =================================================================== -->
+	<!-- Prepares the directory structure                                    -->
+	<!-- =================================================================== -->
+	<target name="esb.built" unless="soa.esb.lib.dir">
+		<echo>Please build the ESB with "ant dist" in the ESB parent</echo>
+		<echo>directory in order to run the Trailblazer application.</echo>
+		<fail>Please build ESB first.</fail>
+	</target>
+
+	<target name="trailblazer.prepare" depends="esb.built,clean" if="soa.esb.lib.dir">
+		<mkdir dir="${esb.dest}"/>
+		<mkdir dir="${esb.dest}/dist"/>
+		<mkdir dir="${esb.dest}/classes"/>
+		<mkdir dir="${esb.samples.trailblazer.client.dest}"/>
+		<mkdir dir="${esb.samples.trailblazer.client.dest}/dist"/>
+		<mkdir dir="${esb.samples.trailblazer.client.dest}/classes"/>
+	</target>
+
+	<!-- Compilation targets -->
+	<!-- ___________________ -->
+	
+	<!-- ESB COMPILATION -->
+	<target name="esb.compile" 
+		depends="trailblazer.prepare"
+		description="Compiling Trailblazer ESB classes">
+		<javac
+		        destdir="${classes.dir}"
+		        classpathref="esb.samples.trailblazer.esb.classpath"
+			target="1.5"
+			debug="true">
+			<src path="${esb.src.dir}"/>
+		</javac>
+	</target>
+
+	<!-- CLIENT(WEB) COMPILATION -->
+    	<target name="client.compile" 
+		depends="trailblazer.prepare"
+		description="Compiling Trailblazer client classes">
+		<javac	destdir="${esb.samples.trailblazer.client.classes.dir}"
+            		classpathref="esb.samples.trailblazer.esb.classpath.client"
+			target="1.5"
+			debug="true">
+	    		<src path="${esb.samples.trailblazer.client.src.dir}"/>
+		</javac>
+	</target>
+
+	<!-- JAR/WAR targets -->
+	<target name="esb.jar" depends="messaging-config, messaging-dependencies, jbossmq-dependencies, compile" >
+		<property name="esb.build.dir" value="${esb.dest}" />
+
+		<echo>${jms.service.file}</echo>
+
+	        <!-- ESB Client JAR -->
+		<echo message="Building Trailblazer ESB archives"/>
+		<jar destfile="${esb.build.dir}/dist/trailblazer-esb.jar"
+        	        basedir="${classes.dir}" 
+               		includes="**/*.class" excludes="**/web/*.class">
+        	</jar>
+        	<!-- ESB Deployment (.esb) -->
+        	<copy todir="${esb.build.dir}/META-INF">
+            		<fileset dir="esb/conf" includes="jboss-esb.xml,deployment.xml" />
+        	</copy>
+	        <jar destfile="${esb.build.dir}/dist/trailblazer.esb">
+        	    <fileset dir="${classes.dir}" excludes="**/web/*.class" />            
+      	    	    <fileset dir="${esb.build.dir}" includes="META-INF/**" />
+	    	    <fileset dir="${basedir}/esb/conf" includes="${jms.service.file}"/>
+       		    <fileset dir="${basedir}/esb/conf" includes="smooks-*.xml,*.xsl" />
+                    <fileset dir="${basedir}/esb/conf" includes="jbossesb-properties.xml" />
+                    <fileset dir="${basedir}" includes="trailblazer.properties,template/**,models/**" />
+        	</jar>
+	</target>
+
+	<target name="war" depends="compile"> 
+
+		<!-- Web side WAR -->
+		<echo message="Building Trailblazer WAR file"/>
+		<delete file="${esb.samples.trailblazer.client.dest}/dist/trailblazer.war" />		
+		<war warfile="${esb.samples.trailblazer.client.dest}/dist/trailblazer.war"
+	       		webxml="${basedir}/client/resources/web.xml">
+			<classes dir="${esb.samples.trailblazer.client.classes.dir}">
+				<include name="**/loanbroker/*.class"/>
+				<include name="**/trailblazer/web/*.class"/>
+				<include name="trailblazer.properties"/>
+			</classes>
+			<webinf dir="${basedir}/client/resources">
+				<include name="wsdl/*"/>
+			</webinf>
+			<lib dir="${esb.dest}/dist">
+                                <include name="trailblazer-esb.jar"/>
+                        </lib>
+			<fileset dir="client/jsp">
+				<include name="**/*.jsp"/>
+			</fileset>
+		</war>
+	</target>
+	
+	<target name="deploy">
+           <copy file="${basedir}/client/java-files/SuccessfulLoanBroker.java" tofile="${basedir}/client/src/org/jboss/soa/esb/samples/trailblazer/loanbroker/LoanBroker.java" overwrite="true"/>
+           <antcall target="common-deploy" />
+        </target>
+	
+        <target name="deploy-error-client">
+           <echo message="update the error client file" />
+           <copy file="${basedir}/client/java-files/FailedLoanBroker.java" tofile="${basedir}/client/src/org/jboss/soa/esb/samples/trailblazer/loanbroker/LoanBroker.java" overwrite="true"/>
+           <antcall target="common-deploy" />          
+        </target>
+	
+	<target name="common-deploy" depends="jar, war">
+	        <echo message="Deploying Trailblazer EAR and WAR files to target server '${target-server}'."/>
+        	<copy todir="${target-server}/deploy">
+            	<fileset dir="${esb.dest}/dist/" includes="trailblazer.esb" />
+            	<fileset dir="${esb.samples.trailblazer.client.dest}/dist/" includes="trailblazer.war" />
+        	</copy>
+	</target>        
+        
+        <target name="undeploy">
+                <delete file="${target-server}/deploy/trailblazer.esb" />
+                <delete file="${target-server}/deploy/trailblazer.war" />
+        </target>
+        
+	        
+	<!-- Short target names -->
+	<target name="compile" depends="esb.compile,client.compile"/>
+	<target name="jar" depends="esb.jar"/>
+
+	<!-- run the ESB listeners -->
+	<!-- set the first argument to 0 for an indefinite run for the listener launcher -->
+	<!-- arg1 = # of seconds to let the listener threads run -->
+	<!-- arg2 = location of the esb config file which describes the listener configurations for a Message aware listener config -->
+	<!-- arg3 (if any) = location of the esb config file which describes the listener configurations for a NON-Message aware listener config (gateway)-->
+	<target name="runESB" depends="jar">
+		<echo>Running ESB Trailblazer listeners</echo>
+		<java fork="yes" classname="org.jboss.soa.esb.listeners.StandAloneBootStrapper" failonerror="true">
+			<jvmarg value="-Dorg.jboss.soa.esb.propertyFile=${trailblazer.dir}/esb/jbossesb-properties.xml"/>
+			<arg value="${trailblazer.dir}/esb/conf/jboss-esb.xml"/>
+			<classpath refid="esb.samples.trailblazer.esb.classpath.run"/>
+		</java>
+	</target>
+
+	<!-- javadocs paths -->
+	<path id="esb.samples.trailblazer.esb.javadocs.path">
+		<pathelement path="esb/classes"/>
+	</path>
+</project>

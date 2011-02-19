@@ -1,0 +1,38 @@
+<assembly xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/assembly-1.1.0-SNAPSHOT.xsd">
+  <id>dist</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <includeBaseDirectory>true</includeBaseDirectory>
+  <fileSets>
+    <fileSet>
+      <directory>src/main/configs</directory>
+      <outputDirectory>/</outputDirectory>
+      <excludes>
+        <exclude>common-assembly.xml</exclude>
+      </excludes>
+    </fileSet>
+  </fileSets>
+  
+     <dependencySets>
+        <dependencySet>
+            <outputDirectory>/lib</outputDirectory>
+            <includes>
+               <include>org.savara.integration:savara-jboss</include>
+               <include>org.savara.bundles:org.savara.common</include>
+               <include>org.savara.bundles:org.savara.common.config.file</include>
+               <include>org.savara.bundles:org.savara.activity</include>
+               <include>org.savara.bundles:org.savara.activity.notifier.jms</include>
+               <include>org.savara.bundles:org.savara.activity.validator.cdm</include>
+               <include>org.pi4soa:org.pi4soa.common</include>
+               <include>org.pi4soa:org.pi4soa.cdl</include>
+               <include>org.pi4soa:org.pi4soa.service</include>
+               <include>org.jboss.savara.dependencies.eclipse:emf-common</include>
+               <include>org.jboss.savara.dependencies.eclipse:emf-ecore</include>
+               <include>org.jboss.savara.dependencies.eclipse:emf-ecore-xmi</include>
+            </includes>
+        </dependencySet>
+    </dependencySets>
+  
+</assembly>

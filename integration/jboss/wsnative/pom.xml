@@ -1,0 +1,129 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.savara.integration</groupId>
+	<artifactId>savara-jbossws-native</artifactId>
+	<version>2.0.0.20110218-M1</version>
+	<packaging>jar</packaging>
+	<name>Savara::Integration::JBoss::WS-Native</name>
+	
+	<parent>
+		<groupId>org.savara.integration</groupId>
+		<artifactId>jboss</artifactId>
+		<version>2.0.0.20110218-M1</version>
+	</parent>
+
+		<dependencies>	
+			<dependency>
+				<groupId>org.savara.bundles</groupId>
+				<artifactId>org.savara.common</artifactId>
+	    		<version>${savara.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.savara.bundles</groupId>
+				<artifactId>org.savara.activity</artifactId>
+	    		<version>${savara.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.savara.integration</groupId>
+				<artifactId>savara-jboss</artifactId>
+	    		<version>${savara.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+	    		<version>${log4j.version}</version>
+				<scope>provided</scope>
+			</dependency>
+		    <dependency>
+			  <groupId>org.jboss.jbossas</groupId>
+			  <artifactId>jboss-as-client</artifactId>
+		      <version>${jboss.version}</version>
+			  <type>pom</type>
+			  <scope>provided</scope>
+			</dependency>
+		    <dependency>
+			  <groupId>org.jboss.ws</groupId>
+			  <artifactId>jbossws-framework</artifactId>
+		      <version>${jbossws.version}</version>
+			  <scope>provided</scope>
+			</dependency>
+		    <dependency>
+			  <groupId>org.jboss.ws.native</groupId>
+			  <artifactId>jbossws-native-core</artifactId>
+		      <version>${jbossws.version}</version>
+			  <scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+            	<version>${junit.version}</version>
+				<scope>test</scope>
+			</dependency>
+
+		</dependencies>
+	
+	<build>
+		<plugins>
+		  <plugin>
+	        <artifactId>maven-assembly-plugin</artifactId>
+	        <executions>
+	          <execution>
+	            <id>dist</id>
+	            <phase>package</phase>
+	            <goals>
+	              <goal>single</goal>
+	            </goals>
+	            <configuration>
+	              <finalName>savara-jbossws-native.sar</finalName>
+	              <appendAssemblyId>true</appendAssemblyId>
+	              <descriptors>
+	                <descriptor>src/main/configs/ws-native-assembly.xml</descriptor>
+	              </descriptors>
+	            </configuration>
+	          </execution>
+	        </executions>
+	      </plugin>
+		  <plugin>
+			<artifactId>maven-javadoc-plugin</artifactId>
+			<executions>
+			  <execution>
+			    <id>generate-javadoc</id>
+			    <phase>package</phase>
+			    <goals>
+			      <goal>jar</goal>
+			    </goals>
+			  </execution>
+			</executions>
+			<configuration>
+			  <doclet>org.jboss.apiviz.APIviz</doclet>
+			  <docletArtifact>
+			    <groupId>org.jboss.apiviz</groupId>
+			    <artifactId>apiviz</artifactId>
+			    <version>1.2.4.GA</version>
+			  </docletArtifact>
+			  <aggregate>true</aggregate>
+			  <attach>false</attach>
+			  <additionalparam>
+			    -d ${project.build.directory}/javadoc
+			    -charset UTF-8
+			    -docencoding UTF-8
+			    -version
+			    -author
+			    -breakiterator
+			    -windowtitle "${project.name} ${project.version} API Reference"
+			    -doctitle "${project.name} ${project.version} API Reference"
+			    -bottom "Copyright © ${project.inceptionYear}-Present ${project.organization.name}. All Rights Reserved."
+			    -link http://java.sun.com/javase/6/docs/api/
+			    -sourceclasspath ${project.build.outputDirectory}
+			  </additionalparam>
+			  <encoding>UTF-8</encoding>
+			  <locale>en_US</locale>
+			</configuration>
+		   </plugin>
+	    </plugins>
+	</build>
+	
+</project>
+

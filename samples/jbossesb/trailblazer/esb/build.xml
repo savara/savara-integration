@@ -1,0 +1,106 @@
+<project name="TRAILBLAZER" default="org.jboss.esb.samples.trailblazer.esb.compile" basedir=".">
+
+	<property name="org.jboss.soa.samples.trailblazer.esb_home"	 	value="../../.."/>
+	<property name="org.jboss.esb.samples.trailblazer.esb.dest"        	value="${basedir}/build"/>
+	<property name="org.jboss.esb.samples.trailblazer.esb.classes.dir" 	value="${basedir}/build/classes/esb/"/>
+	<property name="org.jboss.esb.samples.trailblazer.esb.testclasses.dir"  value="${basedir}/build/classes/tests/"/>
+	<property name="org.jboss.esb.samples.trailblazer.esb.src.dir"          value="${basedir}/src"/>
+	<property name="org.jboss.esb.samples.trailblazer.esb.test.dir"         value="${basedir}/test"/>
+	<property name="org.jboss.esb.samples.trailblazer.esb.lib.dir"      	value="${basedir}/lib"/>
+	<property name="org.jboss.esb.samples.trailblazer.esb.tests.report.dir" value="${basedir}/build/tests"/>
+
+	<!-- UPDATE THIS WITH YOUR JBOSS_HOME -->
+	<property name="org.jboss.soa.samples.trailblazer.jboss_home" 		value="/usr/local/jboss-4.0.4"/>
+
+	<property environment="env" />
+
+        <property name="org.jboss.soa.esb.lib.file" value="jbossesb-rosetta.jar"/>
+        <property name="org.jboss.soa.esb.lib.dist.dir" value="${org.jboss.soa.samples.trailblazer.esb_home}/lib"/>
+        <property name="org.jboss.soa.esb.lib.src.dir" value="../../../build/jbossesb/lib"/>
+
+	<available file="${org.jboss.soa.esb.lib.file}"
+            filepath="${org.jboss.soa.esb.lib.dist.dir}"
+            property="org.jboss.soa.esb.lib.dir"
+            value="${org.jboss.soa.esb.lib.dist.dir}"/>
+
+	<available file="${org.jboss.soa.esb.lib.file}"
+            filepath="${org.jboss.soa.esb.lib.src.dir}"
+            property="org.jboss.soa.esb.lib.dir"
+            value="${org.jboss.soa.esb.lib.src.dir}"/>
+
+
+	<!-- classpath -->
+	<path id="org.jboss.esb.samples.trailblazer.esb.classpath">
+		<fileset dir="${org.jboss.esb.samples.trailblazer.esb.lib.dir}/ext" includes="*.jar"/>
+		<fileset dir="${org.jboss.soa.esb.lib.dir}/ext" includes="*.jar"/>
+		<fileset dir="${org.jboss.soa.samples.trailblazer.jboss_home}/client" includes="jbossall-client.jar jbossws-client.jar mail.jar"/>
+		<fileset dir="${org.jboss.soa.esb.lib.dir}" includes="*.jar"/>
+	</path>
+
+	<!-- classpath for running the listener-->
+	<path id="org.jboss.esb.samples.trailblazer.esb.classpath.run">
+		<fileset dir="${org.jboss.esb.samples.trailblazer.esb.dest}/dist" includes="trailblazer-esb.jar"/>
+		<fileset dir="${org.jboss.soa.samples.trailblazer.esb_home}/lib/ext" includes="*.jar"/>
+		<fileset dir="${org.jboss.soa.esb.lib.dir}/ext" includes="*.jar"/>
+		<!-- for finding the jbossesb-properties.xml file -->
+		<fileset dir="${org.jboss.soa.samples.trailblazer.esb_home}/install/conf" includes="*.jar"/>	
+	</path>
+
+	<target name="clean">
+		<delete dir="${org.jboss.esb.samples.trailblazer.esb.dest}" />
+	</target>
+	
+	<!-- =================================================================== -->
+	<!-- Prepares the directory structure                                    -->
+	<!-- =================================================================== -->
+	<target name="org.jboss.esb.samples.trailblazer.esb.prepare">
+		<mkdir dir="${org.jboss.esb.samples.trailblazer.esb.dest}"/>
+		<mkdir dir="${org.jboss.esb.samples.trailblazer.esb.dest}/dist"/>
+		<mkdir dir="${org.jboss.esb.samples.trailblazer.esb.dest}/classes/esb"/>
+	</target>
+
+	<!-- Compilation targets -->
+	<target name="org.jboss.esb.samples.trailblazer.esb.compile" depends="org.jboss.esb.samples.trailblazer.esb.prepare"
+		description="Compile all classes">
+
+		<javac
+		            destdir="${org.jboss.esb.samples.trailblazer.esb.classes.dir}"
+		            classpathref="org.jboss.esb.samples.trailblazer.esb.classpath"
+		        	debug="true"
+		        	>
+			<src path="${org.jboss.esb.samples.trailblazer.esb.src.dir}"/>
+		</javac>
+
+	</target>
+
+	<!-- javadocs paths -->
+	<path id="org.jboss.esb.samples.trailblazer.esb.javadocs.path">
+		<pathelement path="esb/classes"/>
+	</path>
+
+	<!-- Jar targets -->
+	<target name="org.jboss.esb.samples.trailblazer.esb.jar" depends="org.jboss.esb.samples.trailblazer.esb.compile" >
+		<echo message="Building Trailblazer ESB jar file"/>
+		<delete file="${org.jboss.esb.samples.trailblazer.esb.dest}/dist/trailblazer-esb.jar" />
+		<jar    destfile="${org.jboss.esb.samples.trailblazer.esb.dest}/dist/trailblazer-esb.jar" 
+                basedir="${org.jboss.esb.samples.trailblazer.esb.classes.dir}" 
+                includes="**/*.class" excludes="**/web/*.class"
+                />
+	</target>
+
+	<!-- Short target names -->
+	<target name="compile" depends="org.jboss.esb.samples.trailblazer.esb.compile"/>
+	<target name="jar" depends="org.jboss.esb.samples.trailblazer.esb.jar"/>
+
+	<!-- run the listener -->
+	<target name="runESB" depends="org.jboss.esb.samples.trailblazer.esb.jar">
+		<echo>Running ESB Trailblazer listeners</echo>
+		<java fork="yes" classname="org.jboss.soa.esb.samples.trailblazer.util.Launcher" failonerror="true" 
+			args="10 /home/dbrum/dev/jbossesb/product/samples/trailblazer2/conf/jbossesb-trailblazer.xml">
+			<classpath refid="org.jboss.esb.samples.trailblazer.esb.classpath"/>
+			<classpath refid="org.jboss.esb.samples.trailblazer.esb.classpath.run"/>
+		</java>
+	</target>
+
+		
+</project>

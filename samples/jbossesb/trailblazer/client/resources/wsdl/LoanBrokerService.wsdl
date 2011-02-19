@@ -1,0 +1,45 @@
+<definitions name='LoanBrokerService' targetNamespace='http://localhost/trailblazer' xmlns='http://schemas.xmlsoap.org/wsdl/' xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/' xmlns:tns='http://localhost/trailblazer' xmlns:xsd='http://www.w3.org/2001/XMLSchema'>
+ <types>
+  <xs:schema targetNamespace='http://localhost/trailblazer' version='1.0' xmlns:xs='http://www.w3.org/2001/XMLSchema'>
+   <xs:complexType name='webCustomer'>
+    <xs:sequence>
+     <xs:element minOccurs='0' name='address' type='xs:string'/>
+     <xs:element minOccurs='0' name='email' type='xs:string'/>
+     <xs:element minOccurs='0' name='employerName' type='xs:string'/>
+     <xs:element name='loanAmount' type='xs:double'/>
+     <xs:element name='loanDuration' type='xs:int'/>
+     <xs:element minOccurs='0' name='name' type='xs:string'/>
+     <xs:element name='salary' type='xs:double'/>
+     <xs:element name='ssn' type='xs:int'/>
+    </xs:sequence>
+   </xs:complexType>
+  </xs:schema>
+ </types>
+ <message name='LoanBrokerInterface_RequestLoan'>
+  <part name='webCustomer_1' type='tns:webCustomer'></part>
+ </message>
+ <message name='LoanBrokerInterface_RequestLoanResponse'></message>
+ <portType name='LoanBrokerInterface'>
+  <operation name='RequestLoan' parameterOrder='webCustomer_1'>
+   <input message='tns:LoanBrokerInterface_RequestLoan'></input>
+   <output message='tns:LoanBrokerInterface_RequestLoanResponse'></output>
+  </operation>
+ </portType>
+ <binding name='LoanBrokerInterfaceBinding' type='tns:LoanBrokerInterface'>
+  <soap:binding style='rpc' transport='http://schemas.xmlsoap.org/soap/http'/>
+  <operation name='RequestLoan'>
+   <soap:operation soapAction=''/>
+   <input>
+    <soap:body namespace='http://localhost/trailblazer' use='literal'/>
+   </input>
+   <output>
+    <soap:body namespace='http://localhost/trailblazer' use='literal'/>
+   </output>
+  </operation>
+ </binding>
+ <service name='LoanBrokerService'>
+  <port binding='tns:LoanBrokerInterfaceBinding' name='LoanBrokerInterfacePort'>
+   <soap:address location='http://127.0.0.1:8080/trailblazer/LoanBroker'/>
+  </port>
+ </service>
+</definitions>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.savara.org/ta/project" xmlns:xsi="http://www.w3.org/2001/XMLSchema"
+			xsi:schemaLocation="http://www.savara.org/ta/project tap.xsd"
+			name="Purchasing" version="1.0.0">
+			
+	<phase name="requirements">
+		<resource id="SuccessfulPurchase.scn">
+			<uri type="eclipse" context="purchasing" locator="/SuccessfulPurchase.scn" />
+		</resource>
+		<resource id="InvalidPurchase.scn">
+			<uri type="eclipse" context="purchasing" locator="/InvalidPurchase.scn" />
+		</resource>
+	</phase>
+	
+	<phase name="architecture">
+		<resource id="PurchaseGoods.cdm">
+			<uri type="eclipse" context="purchasing" locator="/PurchaseGoods.cdm" />
+			<relationship type="depends" ref="SuccessfulPurchase.scn" />
+			<relationship type="depends" ref="InvalidPurchase.scn" />
+		</resource>
+	</phase>
+	
+	<phase name="implementation">
+		<resource id="PurchaseGoodsProcess_Store.bpel">
+			<uri type="eclipse" context="PurchaseGoodsProcess-Store" locator="/bpelContent/PurchaseGoodsProcess_Store.bpel" />
+			<relationship type="depends" ref="PurchaseGoods.cdm" >
+				<description>Link from the BPEL process to the 'Store' participant within the choreography</description>
+				<link type="role" to="Store" />
+			</relationship>
+		</resource>
+		<resource id="PurchaseGoodsProcess_CreditAgency.bpel">
+			<uri type="eclipse" context="PurchaseGoodsProcess-CreditAgency" locator="/bpelContent/PurchaseGoodsProcess_CreditAgency.bpel" />
+			<relationship type="depends" ref="PurchaseGoods.cdm" >
+				<description>Link from the BPEL process to the 'CreditAgency' participant within the choreography</description>
+				<link type="role" to="CreditAgency" />
+			</relationship>
+		</resource>
+	</phase>
+</project>

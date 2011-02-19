@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+]>
+<chapter id="overview">
+  <title>Overview</title>
+  <para>The SAVARA Validator component provides the ability to validate executing services 
+  against a choreography description, demonstrating a form runtime governance.
+  </para>
+  
+	<para>
+		Further information about configuring the runtime validation of services against a choreography 
+		can be found in the <emphasis role="bold">SAVARA User Guide</emphasis>. 
+	</para>
+	
+	<note>
+		<para>
+			Before attempting to deploy and run these examples, you must follow the instructions 
+			in the <filename>${SAVARA}/install</filename> folder. To be able to
+			examine and modify the examples, it is advisable to install the SAVARA Eclipse tools,
+			and import the samples into the Eclipse environment.
+		</para>
+	</note>
+	
+</chapter>

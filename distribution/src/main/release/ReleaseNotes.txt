@@ -1,0 +1,78 @@
+SAVARA 1.1.0.CR1
+================
+
+This is the first Candidate Release of version 1.1.0 of SAVARA.
+
+The main new features within this release are service validators for
+Web Services based on the jbossws-native stack (which includes BPEL
+processes deployed in RiftSaw), and the first use of the TAP
+(Testable Architecture Project) file as a means of representing artifacts
+and their relationships, and being able to validate them.
+
+The detailed release notes can be found at:
+https://jira.jboss.org/secure/ReleaseNote.jspa?projectId=12310870&version=12315104
+
+
+SAVARA 1.0.0.Final
+==================
+
+This is the Final Release of version 1.0.0 of SAVARA.
+
+This release is primarily a bug fix release, to clear up remaining issues found
+in the candidate releases.
+
+The detailed release notes can be found at:
+https://jira.jboss.org/secure/ReleaseNote.jspa?projectId=12310870&version=12315141
+
+
+SAVARA 1.0.0.CR2
+================
+
+This is the second Candidate Release of version 1.0.0 of SAVARA.
+
+This release is primarily a bug fix release, with a number of issues being resolved
+with the BPEL and WSDL generation.
+
+The detailed release notes can be found at:
+https://jira.jboss.org/secure/ReleaseNote.jspa?projectId=12310870&version=12314160
+
+
+SAVARA 1.0.0.CR1
+================
+
+This is the first Candidate Release of version 1.0.0 of SAVARA.
+
+This release has resulted in a number of significant changes to the structure of the project.
+Rather than have three separate distributions, we have consolidated all functionality into
+one main distribution, and an Eclipse update site for the plugins.
+
+The functionality associated with 'conversation aware' ESB actions has been removed from the
+main distribution, and moved into a separate 'experimental' branch. This work has provided
+some useful insight in to some possible features for the future, however the ideas are
+not mature enough to remain as part of the first release.
+
+NOTE: The annotation used for runtime validation has been renamed. Therefore if any choreographies
+have been written, that include this annotation, you will need to update the annotation name and
+the top level node of the XML fragment included in the annotation, from 'jbossesb' to 'validator'.
+This can either be achieved by create new annotations and copying the destinations, or by
+opening the .cdm files in a text editor, and updating the <semanticAnnotation> elements directly.
+
+The detailed release notes can be found at:
+https://jira.jboss.org/secure/ReleaseNote.jspa?projectId=12310870&version=12313913
+
+
+SAVARA Tools Eclipse 1.0-M1
+===========================
+
+This is the first milestone of version 1.0 of the SAVARA tools for Eclipse.
+
+This distribution includes:
+- early access work on checking the conformance of a choreography, defined using the pi4soa
+choreography editor, against service implementations in BPEL and JBossESB "conversation aware"
+actions
+- generation of a choreography to BPEL services
+- generation of a choreography to JBossESB services (using "conversation aware" ESB actions)
+- generation of a choreography as a BPMN collaboration diagram
+
+The details release notes for all SAVARA 1.0-M1 components can be found at:
+https://jira.jboss.org/jira/secure/ReleaseNote.jspa?version=12313912&styleName=Html&projectId=12310870&Create=Create

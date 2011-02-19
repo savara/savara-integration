@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+]>
+<chapter id="servicevalidator">
+  <title>Service Validator</title>
+
+  <section>
+	<title>Trailblazer Example</title>
+
+	<para>
+This example can be found in the <filename>trailblazer</filename> folder. See the TrailBlazer Guide 
+(<filename>${SAVARA}/docs/trailblazer/TBGuide.pdf</filename>) for more information about the example. 
+	</para>
+
+<note>
+	<para>
+The choreography description for the Trailblazer example can be found in the 
+<emphasis>trailblazer-models</emphasis> project in the Eclipse environment. If the project has 
+not yet been imported, then please refer to the instructions in the 
+<emphasis>SAVARA Getting Started Guide</emphasis>.
+	</para>
+	<para>
+You can open the choreography for the trailblazer (trailblazer.cdm) and also a scenario representing 
+a valid transaction associated with the choreography (LoanRequest.scn). In the choreography description 
+editor, view the "Choreography Flows" tab to see the structure of the process.
+	</para>
+	<para>
+To simulate the scenario against the choreography, to ensure that the choreography correctly caters 
+for the valid business scenario, the user should press the green 'play' button in the toolbar, associated 
+with the Scenario Editor.
+	</para>
+</note>
+
+
+  <orderedlist>
+	  <listitem>
+Update the <filename>${JBossAS}/server/default/deployers/esb.deployer/jbossesb-properties.xml</filename> 
+file, in the section entitled "transports" and specify all of the SMTP mail server settings for your 
+environment.
+	</listitem>
+	<listitem>
+Update the <filename>${SAVARA}/samples/jbossesb/trailblazer/trailblazer.properties</filename>
+	<para>
+Update the <property>file.bank.monitored.directory</property> and 
+<property>file.output.directory</property> properties. These are folders used by the File Based Bank, 
+and are set to <filename>/tmp/input</filename> and <filename>/tmp/output</filename> by default. 
+If the selected folders do not exist, then please ensure they are created prior to running the example.
+	</para>
+	</listitem>
+	<listitem>
+Update the <filename>trailblazer/esb/conf/jboss-esb.xml</filename>
+	<para>
+There is a <emphasis>fs-provider</emphasis> block, update the <property>directory</property> 
+attribute value to be the same as the <property>file.output.directory</property> value in 
+<filename>trailblazer.properties</filename> file.
+	</para>
+	</listitem>
+	<listitem>
+Start the JBossAS server
+	</listitem>
+	<listitem>
+From the <filename>trailblazer</filename> folder, execute the command to start the ESB: 
+<emphasis role="bold">ant deploy</emphasis>
+	<para>
+this should deploy the ESB and WAR files to your JBoss AS <filename>server/default</filename>.
+	</para>
+	</listitem>
+	<listitem>
+From the <filename>trailblazer/banks</filename> folder, execute the command to start the JMS 
+Bank service: <emphasis role="bold">ant runJMSBank</emphasis>.
+	</listitem>
+	<listitem>
+From the <filename>trailblazer/banks</filename> folder, execute the command to start the File based 
+Bank service: <emphasis role="bold">ant runFileBank</emphasis>.
+	</listitem>
+	<listitem>
+		<para>
+In the Eclipse environment, select the popup menu associated with the <filename>trailblazer.cdm</filename> 
+file, and choose the <emphasis>Savara->Monitor</emphasis> menu item.
+		</para>
+
+		<imageobject>
+			<imagedata fileref="en-US/images/MonitorMenu.jpg" align="center" width="2in" />
+		</imageobject>
+
+		<para>
+Wait for the monitor window to start, and indicate that the choreography is being monitored, shown in the 
+status line at the bottom of the window.
+		</para>
+
+		<imageobject>
+			<imagedata fileref="en-US/images/ChoreoMonReady.jpg" align="center" width="4in" />
+		</imageobject>
+
+	</listitem>
+	<listitem>
+		<para>
+Start a browser and enter the URL: 
+<ulink url="http://localhost:8080/trailblazer">localhost:8080/trailblazer</ulink>.
+		</para>
+
+		<imageobject>
+			<imagedata fileref="en-US/images/TrailblazerWebPage.jpg" align="center" width="4in" />
+		</imageobject>
+
+	</listitem>
+	<listitem>
+Now you can submit quotes, You will see either a loan request rejected (single email) because the 
+score is less than 4, or two emails (one from JMS bank and one from FileBased bank) with valid quotes. 
+When entering subsequent quotes, make sure that the quote reference is updated, so that each session 
+has a unique id.
+	</listitem>
+     </orderedlist>
+	<para>
+To demonstrate what occurs when the implementation deviates from the expected behaviour as defined 
+in the choreography description, try the following steps:
+	</para>
+    <orderedlist>
+	<listitem>
+		Run the ant task <emphasis role="bold">ant deploy-error-client</emphasis> to redeploy the 
+		trailblaizer example.
+	</listitem>	
+	<listitem>
+		Run the commands from step 6 above.
+	</listitem>
+	</orderedlist>
+	<para>
+		The above steps show how changing the service implementation without updating a choreography 
+		can result in behavioural validation errors being detected. 	
+	</para>
+	<tip>
+	   <title>What is changed when we run ant deploy-error-client</title>
+		<para>
+			Compared to command of <emphasis role="bold">ant deploy</emphasis>, basically, we have 
+			just updated the following code in
+			<emphasis role="bold">${SAVARA}/samples/jbossesb/trailblazer/client/src/org/jboss/soa/esb/samples/trailblazer/loanbroker/LoanBroker.java</emphasis> file.
+		</para>
+		<para>
+		In the following code within the <emphasis role="bold">processLoanRequest</emphasis> 
+		method, we've changed the "4" to "7"
+		
+<programlisting>
+        //step 2 - check if score is acceptable        
+        if (score >= 4) {
+</programlisting>
+		</para>
+	</tip>  
+	
+	<para>
+	Issue further loan requests, remembering to change the quote reference each time, until a Credit 
+	Check result of between 4 and 6 inclusive occurs, which will result in an out of sequence message 
+	being reported (in red) to the Savara Monitor
+	</para>
+
+	<note>
+		<para>
+		It is currently a requirement that the choreography used within the Choreography Monitor is 
+		the same as the description used to locally monitor the services 
+		(i.e. within the savara-jbossesb.esb/models directory).
+		</para>
+	</note>	
+
+  </section>
+	
+</chapter>

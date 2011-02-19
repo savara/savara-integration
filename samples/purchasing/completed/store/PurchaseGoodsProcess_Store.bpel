@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?><process xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ca="http://www.jboss.org/examples/creditAgency" xmlns:sto="http://www.jboss.org/examples/store" xmlns:tns="http://www.jboss.org/savara/examples" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="PurchaseGoodsProcess_Store" targetNamespace="http://www.jboss.org/examples/store" xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable">
+    <import importType="http://schemas.xmlsoap.org/wsdl/" location="PurchaseGoodsProcess_Store.wsdl" namespace="http://www.jboss.org/examples/store"/>
+    <import importType="http://schemas.xmlsoap.org/wsdl/" location="PurchaseGoodsProcess_CreditAgency.wsdl" namespace="http://www.jboss.org/examples/creditAgency"/>
+    <import importType="http://schemas.xmlsoap.org/wsdl/" location="PurchaseGoodsProcess_StoreArtifacts.wsdl" namespace="http://www.jboss.org/examples/store"/>
+    <partnerLinks>
+        <partnerLink myRole="Store" name="BuyerToStore" partnerLinkType="sto:BuyerToStoreServiceLT"/>
+        <partnerLink name="StoreToCreditAgency" partnerLinkType="sto:StoreToCreditAgencyLT" partnerRole="CreditAgencyRequester"/>
+    </partnerLinks>
+    <variables>
+        <variable messageType="sto:buyRequest" name="buyRequestVar"/>
+        <variable messageType="ca:checkCreditRequest" name="checkCreditRequestVar"/>
+        <variable messageType="ca:checkCreditResponse" name="checkCreditResponseVar"/>
+        <variable messageType="sto:buyResponse" name="buyResponseVar"/>
+        <variable messageType="sto:BuyFailedFault" name="BuyFailedFaultVar"/>
+    </variables>
+    <sequence>
+        <receive createInstance="yes" name="Receive_BuyRequest" operation="buy" partnerLink="BuyerToStore" portType="sto:Store" variable="buyRequestVar"/>
+        <scope>
+            <faultHandlers>
+                <catch faultMessageType="ca:CreditCheckFailedFault" faultName="ca:CreditCheckFailed" faultVariable="CreditCheckFailedFaultVar">
+                    <sequence>
+						<assign name="CopyPurchaseDetails">
+		                    <bpel:copy>
+		                        <bpel:from>
+		                            <bpel:literal xml:space="preserve">
+										<tns:BuyFailed xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+													xmlns:tns="http://www.jboss.org/examples/store" 
+													xsi:schemaLocation="http://www.jboss.org/examples/store store.xsd " 
+													id="" />
+		                            </bpel:literal>
+		                        </bpel:from>
+		                        <bpel:to variable="BuyFailedFaultVar" part="content"></bpel:to>
+		                    </bpel:copy>
+						    <copy>
+						        <from>$CreditCheckFailedFaultVar.content/@id</from>
+						        <to>$BuyFailedFaultVar.content/@id</to>
+						    </copy>
+						</assign>
+                        <reply faultName="sto:BuyFailed" name="Send_BuyFailed" operation="buy" partnerLink="BuyerToStore" portType="sto:Store" variable="BuyFailedFaultVar"/>
+                    </sequence>
+                </catch>
+            </faultHandlers>
+            <sequence>
+				<assign name="CopyPurchaseDetails">
+                    <bpel:copy>
+                        <bpel:from>
+                            <bpel:literal xml:space="preserve">
+                            	<tns:CreditCheckRequest xmlns:tns="http://www.jboss.org/examples/creditAgency" 
+                            				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+                            				xsi:schemaLocation="http://www.jboss.org/examples/creditAgency creditAgency.xsd "
+                            				id="" amount="" >
+                            	</tns:CreditCheckRequest>
+                            </bpel:literal>
+                        </bpel:from>
+                        <bpel:to variable="checkCreditRequestVar" part="content"></bpel:to>
+                    </bpel:copy>
+				    <copy>
+				        <from>$buyRequestVar.content/@id</from>
+				        <to>$checkCreditRequestVar.content/@id</to>
+				    </copy>
+				    <copy>
+				        <from>$buyRequestVar.content/@amount</from>
+				        <to>$checkCreditRequestVar.content/@amount</to>
+				    </copy>
+                </assign>
+                
+                <invoke inputVariable="checkCreditRequestVar" name="Send_CreditCheckRequest" operation="checkCredit" outputVariable="checkCreditResponseVar" partnerLink="StoreToCreditAgency" portType="ca:CreditAgency"/>
+
+				<assign name="CopyPurchaseDetails">
+                    <bpel:copy>
+                        <bpel:from>
+                            <bpel:literal xml:space="preserve">
+								<tns:BuyConfirmed xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+											xmlns:tns="http://www.jboss.org/examples/store" 
+											xsi:schemaLocation="http://www.jboss.org/examples/store store.xsd " 
+											id="" />
+                            </bpel:literal>
+                        </bpel:from>
+                        <bpel:to variable="buyResponseVar" part="content"></bpel:to>
+                    </bpel:copy>
+				    <copy>
+				        <from>$checkCreditResponseVar.content/@id</from>
+				        <to>$buyResponseVar.content/@id</to>
+				    </copy>
+				</assign>
+                <reply name="Send_BuyConfirmed" operation="buy" partnerLink="BuyerToStore" portType="sto:Store" variable="buyResponseVar"/>
+            </sequence>
+        </scope>
+    </sequence>
+</process>

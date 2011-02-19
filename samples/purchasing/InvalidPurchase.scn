@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scn:Scenario xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:scn="http://www.pi4soa.org/scenario" name="InvalidPurchase" description="Invalid purchase goods" author="" choreographyDescriptionURL="PurchaseGoods.cdm">
+  <scenarioObjects xsi:type="scn:MessageEvent" participant="//@participants.0" operationName="buy" messageType="{http://www.jboss.org/examples/store}BuyRequest" valueURL="BuyRequest.xml"/>
+  <scenarioObjects xsi:type="scn:MessageEvent" participant="//@participants.1" operationName="buy" direction="receive" messageType="{http://www.jboss.org/examples/store}BuyRequest" valueURL="BuyRequest.xml"/>
+  <scenarioObjects xsi:type="scn:MessageEvent" participant="//@participants.1" operationName="checkCredit" messageType="{http://www.jboss.org/examples/creditAgency}CreditCheckRequest" valueURL="CreditCheckRequest.xml"/>
+  <scenarioObjects xsi:type="scn:MessageEvent" participant="//@participants.2" operationName="checkCredit" direction="receive" messageType="{http://www.jboss.org/examples/creditAgency}CreditCheckRequest" valueURL="CreditCheckRequest.xml"/>
+  <scenarioObjects xsi:type="scn:MessageEvent" participant="//@participants.2" operationName="checkCredit" faultName="{http://www.jboss.org/savara/examples}CreditCheckFailed" isRequest="false" messageType="{http://www.jboss.org/examples/creditAgency}CreditCheckInvalid" valueURL="CreditCheckInvalid.xml"/>
+  <scenarioObjects xsi:type="scn:MessageEvent" participant="//@participants.1" operationName="checkCredit" faultName="{http://www.jboss.org/savara/examples}CreditCheckFailed" isRequest="false" direction="receive" messageType="{http://www.jboss.org/examples/creditAgency}CreditCheckInvalid" valueURL="CreditCheckInvalid.xml"/>
+  <scenarioObjects xsi:type="scn:MessageEvent" participant="//@participants.1" operationName="buy" isRequest="false" messageType="{http://www.jboss.org/examples/store}BuyConfirmed" valueURL="BuyConfirmed.xml"/>
+  <scenarioObjects xsi:type="scn:MessageEvent" participant="//@participants.0" operationName="buy" isRequest="false" direction="receive" messageType="{http://www.jboss.org/examples/store}BuyConfirmed" valueURL="BuyConfirmed.xml"/>
+  <messageLinks source="//@scenarioObjects.0" target="//@scenarioObjects.1"/>
+  <messageLinks source="//@scenarioObjects.2" target="//@scenarioObjects.3"/>
+  <messageLinks source="//@scenarioObjects.4" target="//@scenarioObjects.5"/>
+  <messageLinks source="//@scenarioObjects.6" target="//@scenarioObjects.7"/>
+  <participants type="Buyer"/>
+  <participants type="sto:Store"/>
+  <participants type="ca:CreditAgency"/>
+</scn:Scenario>

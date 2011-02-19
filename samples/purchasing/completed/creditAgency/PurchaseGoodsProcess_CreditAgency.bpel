@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><process xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ca="http://www.jboss.org/examples/creditAgency" xmlns:sto="http://www.jboss.org/examples/store" xmlns:tns="http://www.jboss.org/savara/examples" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="PurchaseGoodsProcess_CreditAgency" targetNamespace="http://www.jboss.org/examples/creditAgency" xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable">
+    <import importType="http://schemas.xmlsoap.org/wsdl/" location="PurchaseGoodsProcess_CreditAgency.wsdl" namespace="http://www.jboss.org/examples/creditAgency"/>
+    <import importType="http://schemas.xmlsoap.org/wsdl/" location="PurchaseGoodsProcess_CreditAgencyArtifacts.wsdl" namespace="http://www.jboss.org/examples/creditAgency"/>
+    <partnerLinks>
+        <partnerLink myRole="CreditAgency" name="StoreToCreditAgency" partnerLinkType="ca:StoreToCreditAgencyServiceLT"/>
+    </partnerLinks>
+    <variables>
+        <variable messageType="ca:checkCreditRequest" name="checkCreditRequestVar"/>
+        <variable messageType="ca:checkCreditResponse" name="checkCreditResponseVar"/>
+        <variable messageType="ca:CreditCheckFailedFault" name="CreditCheckFailedFaultVar"/>
+    </variables>
+    <sequence>
+        <receive createInstance="yes" name="Receive_CreditCheckRequest" operation="checkCredit" partnerLink="StoreToCreditAgency" portType="ca:CreditAgency" variable="checkCreditRequestVar"/>
+        <if>
+			<bpel:condition><![CDATA[
+				$checkCreditRequestVar.content/@amount <= 500
+			]]></bpel:condition>
+            <sequence>
+				<assign name="CopyPurchaseDetails">
+                    <bpel:copy>
+                        <bpel:from>
+                            <bpel:literal xml:space="preserve">
+                            	<tns:CreditCheckOk xmlns:tns="http://www.jboss.org/examples/creditAgency" 
+                            				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+                            				xsi:schemaLocation="http://www.jboss.org/examples/creditAgency creditAgency.xsd "
+                            				id="" amount="" >
+                            	</tns:CreditCheckOk>
+                            </bpel:literal>
+                        </bpel:from>
+                        <bpel:to variable="checkCreditResponseVar" part="content"></bpel:to>
+                    </bpel:copy>
+				    <copy>
+				        <from>$checkCreditRequestVar.content/@id</from>
+				        <to>$checkCreditResponseVar.content/@id</to>
+				    </copy>
+				</assign>
+                <reply name="Send_CreditCheckOk" operation="checkCredit" partnerLink="StoreToCreditAgency" portType="ca:CreditAgency" variable="checkCreditResponseVar"/>
+            </sequence>
+            <else>
+                <sequence>
+					<assign name="CopyPurchaseDetails">
+	                    <bpel:copy>
+	                        <bpel:from>
+	                            <bpel:literal xml:space="preserve">
+	                            	<tns:CreditCheckInvalid xmlns:tns="http://www.jboss.org/examples/creditAgency" 
+	                            				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	                            				xsi:schemaLocation="http://www.jboss.org/examples/creditAgency creditAgency.xsd "
+	                            				id="" amount="" >
+	                            	</tns:CreditCheckInvalid>
+	                            </bpel:literal>
+	                        </bpel:from>
+	                        <bpel:to variable="CreditCheckFailedFaultVar" part="content"></bpel:to>
+	                    </bpel:copy>
+					    <copy>
+					        <from>$checkCreditRequestVar.content/@id</from>
+					        <to>$CreditCheckFailedFaultVar.content/@id</to>
+					    </copy>
+					</assign>
+                    <reply faultName="ca:CreditCheckFailed" name="Send_CreditCheckInvalid" operation="checkCredit" partnerLink="StoreToCreditAgency" portType="ca:CreditAgency" variable="CreditCheckFailedFaultVar"/>
+                </sequence>
+            </else>
+        </if>
+    </sequence>
+</process>

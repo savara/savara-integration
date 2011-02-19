@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deployment xmlns="urn:jboss:bean-deployer:2.0">
+
+  <bean class="org.savara.integration.jboss.SavaraService"
+        				name="SavaraService">
+    <annotation>@org.jboss.aop.microcontainer.aspects.jmx.JMX(name="savara:service=SavaraService", exposedInterface=org.savara.integration.jboss.SavaraServiceMBean.class,registerDirectly=true)</annotation>
+    <depends>jboss.messaging.destination:service=Topic,name=tracker</depends>
+  </bean>
+
+</deployment>
