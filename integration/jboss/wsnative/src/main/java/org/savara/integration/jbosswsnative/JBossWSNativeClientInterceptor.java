@@ -48,22 +48,26 @@ public class JBossWSNativeClientInterceptor extends AbstractJBossWSNativeInterce
 		if (endpoint != null) {
 			
 			try {
-				ActivityProcessor ap=ActivityProcessorFactory.getActivityProcessor();
+				String mesgtype=getMessageType(soapCtx, false);
 				
-				InteractionActivity ia=new InteractionActivity();
-				
-				ia.setDestinationType(endpoint.toString());
-				
-				ia.setExchangeType(ExchangeType.RESPONSE);
-				ia.setOutbound(false);
-				
-				MessageParameter mp=new MessageParameter();
-				mp.setType(getMessageType(soapCtx, false));
-				mp.setValue(getMessage(soapCtx));
-				
-				ia.getParameter().add(mp);
-				
-				ap.process(ia);
+				if (mesgtype != null) {
+					ActivityProcessor ap=ActivityProcessorFactory.getActivityProcessor();
+					
+					InteractionActivity ia=new InteractionActivity();
+					
+					ia.setDestinationType(endpoint.toString());
+					
+					ia.setExchangeType(ExchangeType.RESPONSE);
+					ia.setOutbound(false);
+					
+					MessageParameter mp=new MessageParameter();
+					mp.setType(mesgtype);
+					mp.setValue(getMessage(soapCtx));
+					
+					ia.getParameter().add(mp);
+					
+					ap.process(ia);
+				}
 				
 			} catch(Exception e) {
 				logger.error("Failed to report interaction activity", e);
@@ -82,22 +86,26 @@ public class JBossWSNativeClientInterceptor extends AbstractJBossWSNativeInterce
 		if (endpoint != null) {
 			
 			try {
-				ActivityProcessor ap=ActivityProcessorFactory.getActivityProcessor();
+				String mesgtype=getMessageType(soapCtx, true);
 				
-				InteractionActivity ia=new InteractionActivity();
-				
-				ia.setDestinationType(endpoint.toString());
-				
-				ia.setExchangeType(ExchangeType.REQUEST);
-				ia.setOutbound(true);
-				
-				MessageParameter mp=new MessageParameter();
-				mp.setType(getMessageType(soapCtx, true));
-				mp.setValue(getMessage(soapCtx));
-				
-				ia.getParameter().add(mp);
-				
-				ap.process(ia);
+				if (mesgtype != null) {
+					ActivityProcessor ap=ActivityProcessorFactory.getActivityProcessor();
+					
+					InteractionActivity ia=new InteractionActivity();
+					
+					ia.setDestinationType(endpoint.toString());
+					
+					ia.setExchangeType(ExchangeType.REQUEST);
+					ia.setOutbound(true);
+					
+					MessageParameter mp=new MessageParameter();
+					mp.setType(mesgtype);
+					mp.setValue(getMessage(soapCtx));
+					
+					ia.getParameter().add(mp);
+					
+					ap.process(ia);
+				}
 				
 			} catch(Exception e) {
 				logger.error("Failed to report interaction activity", e);

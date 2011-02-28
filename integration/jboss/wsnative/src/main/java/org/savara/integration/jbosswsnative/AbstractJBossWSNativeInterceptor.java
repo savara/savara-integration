@@ -120,7 +120,7 @@ public abstract class AbstractJBossWSNativeInterceptor extends GenericSOAPHandle
 			} catch(Exception e) {
 				logger.error("Failed to get message type from message content", e);
 			}
-		} else {
+		} else if (logger.isDebugEnabled()) {
 			logger.debug("Message type="+ret);
 		}
 
