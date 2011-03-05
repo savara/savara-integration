@@ -4,8 +4,9 @@
         <active>
             true
         </active>
+        <process-events generate="all"/>
         <provide partnerLink="StoreToCreditAgency">
-            <service name="ns1:CreditAgencyService" port="CreditAgencyPort"/>
+            <service name="ns1:CreditAgencyService" port="CreditAgencyInterfacePort"/>
         </provide>
     </process>
 </deploy>

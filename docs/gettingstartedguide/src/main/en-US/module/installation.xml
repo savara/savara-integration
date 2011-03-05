@@ -24,7 +24,8 @@
        		</para>
        		<orderedlist>
        			<listitem>JBossAS (5.1.0.GA or higher) <ulink url="http://www.jboss.org/jbossas">http://www.jboss.org/jbossas</ulink></listitem>
-       			<listitem>JBossAS (4.8 or higher) <ulink url="http://www.jboss.org/jbossesb">http://www.jboss.org/jbossesb</ulink></listitem>
+       			<listitem>JBossESB (4.9 or higher) <ulink url="http://www.jboss.org/jbossesb">http://www.jboss.org/jbossesb</ulink></listitem>
+       			<listitem>RiftSaw (2.2 or higher) <ulink url="http://www.jboss.org/riftsaw">http://www.jboss.org/riftsaw</ulink></listitem>
        			<listitem>SAVARA (version 2.0.0 or higher), available from <ulink url="http://www.jboss.org/savara/downloads">http://www.jboss.org/savara/downloads</ulink></listitem>
        		</orderedlist>
        </section>
@@ -64,20 +65,20 @@
        			them within your Eclipse environment.
        			</para>
        			<para>
-       			The <emphasis>JBoss Savara Tools</emphasis> feature should be selected from the
+       			The <emphasis>SAVARA Tools</emphasis>, <emphasis>JBoss BPEL Editor</emphasis> and
+			<emphasis>pi4soa core</emphasis> features should be selected from the
        			<emphasis>SOA Development</emphasis> category.
        			</para>
-       			<para>
-       			If you wish to view the generated BPEL using a BPEL editor, rather than
-       			XML, then you should also select the <emphasis>JBoss BPEL Editor</emphasis> from the
-       			<emphasis>SOA Development</emphasis> category.
-       			</para>
-       			<para>
-       			NOTE: If you don't install the BPEL Editor, then you will have to install
-       			GMF. This can be found on the Helios update site, under the <emphasis>Modeling</emphasis>
-       			category. Select the <emphasis>Graphical Modeling Framework</emphasis> entry, and
-       			following the instructions to install.
-       			</para>
+
+			<note>
+			<para>
+			If a more recent version of the Eclipse plugins is required,
+			then only select the other features from
+			this JBoss Tools update site, and instead go to the SAVARA download page
+			for information on the location of an alternative update site
+			where more recent SAVARA Tools plugins can be obtained.
+			</para>
+			</note>
 
        			<para>
        			It is also recommended that you install the JBoss WebServices Tools, and JBossAS Tools,
@@ -102,6 +103,14 @@
        			
        			<listitem>
        			JBossESB
+       			<para>
+       			Download the latest version and follow the instructions for installing it
+       			into the JBossAS environment.
+       			</para>
+       			</listitem>
+       			
+       			<listitem>
+       			RiftSaw
        			<para>
        			Download the latest version and follow the instructions for installing it
        			into the JBossAS environment.

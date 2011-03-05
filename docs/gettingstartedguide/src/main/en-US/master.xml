@@ -5,7 +5,7 @@
 
 <book lang="en">
   <bookinfo>
-    <title>SAVARA 1.2</title>
+    <title>SAVARA</title>
     <subtitle>Getting Started Guide</subtitle>
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="module/author_group.xml"/>
   </bookinfo>

@@ -2,7 +2,7 @@
     <import importType="http://schemas.xmlsoap.org/wsdl/" location="PurchaseGoodsProcess_CreditAgency.wsdl" namespace="http://www.jboss.org/examples/creditAgency"/>
     <import importType="http://schemas.xmlsoap.org/wsdl/" location="PurchaseGoodsProcess_CreditAgencyArtifacts.wsdl" namespace="http://www.jboss.org/examples/creditAgency"/>
     <partnerLinks>
-        <partnerLink myRole="CreditAgency" name="StoreToCreditAgency" partnerLinkType="ca:StoreToCreditAgencyServiceLT"/>
+        <partnerLink myRole="CreditAgencyInterface" name="StoreToCreditAgency" partnerLinkType="ca:StoreToCreditAgencyServiceLT"/>
     </partnerLinks>
     <variables>
         <variable messageType="ca:checkCreditRequest" name="checkCreditRequestVar"/>
@@ -10,7 +10,7 @@
         <variable messageType="ca:CreditCheckFailedFault" name="CreditCheckFailedFaultVar"/>
     </variables>
     <sequence>
-        <receive createInstance="yes" name="Receive_CreditCheckRequest" operation="checkCredit" partnerLink="StoreToCreditAgency" portType="ca:CreditAgency" variable="checkCreditRequestVar"/>
+        <receive createInstance="yes" name="Receive_CreditCheckRequest" operation="checkCredit" partnerLink="StoreToCreditAgency" portType="ca:CreditAgencyInterface" variable="checkCreditRequestVar"/>
         <if>
 			<bpel:condition><![CDATA[
 				$checkCreditRequestVar.content/@amount <= 500
@@ -34,7 +34,7 @@
 				        <to>$checkCreditResponseVar.content/@id</to>
 				    </copy>
 				</assign>
-                <reply name="Send_CreditCheckOk" operation="checkCredit" partnerLink="StoreToCreditAgency" portType="ca:CreditAgency" variable="checkCreditResponseVar"/>
+                <reply name="Send_CreditCheckOk" operation="checkCredit" partnerLink="StoreToCreditAgency" portType="ca:CreditAgencyInterface" variable="checkCreditResponseVar"/>
             </sequence>
             <else>
                 <sequence>
@@ -56,7 +56,7 @@
 					        <to>$CreditCheckFailedFaultVar.content/@id</to>
 					    </copy>
 					</assign>
-                    <reply faultName="ca:CreditCheckFailed" name="Send_CreditCheckInvalid" operation="checkCredit" partnerLink="StoreToCreditAgency" portType="ca:CreditAgency" variable="CreditCheckFailedFaultVar"/>
+                    <reply faultName="ca:CreditCheckFailed" name="Send_CreditCheckInvalid" operation="checkCredit" partnerLink="StoreToCreditAgency" portType="ca:CreditAgencyInterface" variable="CreditCheckFailedFaultVar"/>
                 </sequence>
             </else>
         </if>

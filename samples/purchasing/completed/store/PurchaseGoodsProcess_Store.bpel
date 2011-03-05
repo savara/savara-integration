@@ -3,7 +3,7 @@
     <import importType="http://schemas.xmlsoap.org/wsdl/" location="PurchaseGoodsProcess_CreditAgency.wsdl" namespace="http://www.jboss.org/examples/creditAgency"/>
     <import importType="http://schemas.xmlsoap.org/wsdl/" location="PurchaseGoodsProcess_StoreArtifacts.wsdl" namespace="http://www.jboss.org/examples/store"/>
     <partnerLinks>
-        <partnerLink myRole="Store" name="BuyerToStore" partnerLinkType="sto:BuyerToStoreServiceLT"/>
+        <partnerLink myRole="StoreInterface" name="BuyerToStore" partnerLinkType="sto:BuyerToStoreServiceLT"/>
         <partnerLink name="StoreToCreditAgency" partnerLinkType="sto:StoreToCreditAgencyLT" partnerRole="CreditAgencyRequester"/>
     </partnerLinks>
     <variables>
@@ -14,7 +14,7 @@
         <variable messageType="sto:BuyFailedFault" name="BuyFailedFaultVar"/>
     </variables>
     <sequence>
-        <receive createInstance="yes" name="Receive_BuyRequest" operation="buy" partnerLink="BuyerToStore" portType="sto:Store" variable="buyRequestVar"/>
+        <receive createInstance="yes" name="Receive_BuyRequest" operation="buy" partnerLink="BuyerToStore" portType="sto:StoreInterface" variable="buyRequestVar"/>
         <scope>
             <faultHandlers>
                 <catch faultMessageType="ca:CreditCheckFailedFault" faultName="ca:CreditCheckFailed" faultVariable="CreditCheckFailedFaultVar">
@@ -36,7 +36,7 @@
 						        <to>$BuyFailedFaultVar.content/@id</to>
 						    </copy>
 						</assign>
-                        <reply faultName="sto:BuyFailed" name="Send_BuyFailed" operation="buy" partnerLink="BuyerToStore" portType="sto:Store" variable="BuyFailedFaultVar"/>
+                        <reply faultName="sto:BuyFailed" name="Send_BuyFailed" operation="buy" partnerLink="BuyerToStore" portType="sto:StoreInterface" variable="BuyFailedFaultVar"/>
                     </sequence>
                 </catch>
             </faultHandlers>
@@ -64,7 +64,7 @@
 				    </copy>
                 </assign>
                 
-                <invoke inputVariable="checkCreditRequestVar" name="Send_CreditCheckRequest" operation="checkCredit" outputVariable="checkCreditResponseVar" partnerLink="StoreToCreditAgency" portType="ca:CreditAgency"/>
+                <invoke inputVariable="checkCreditRequestVar" name="Send_CreditCheckRequest" operation="checkCredit" outputVariable="checkCreditResponseVar" partnerLink="StoreToCreditAgency" portType="ca:CreditAgencyInterface"/>
 
 				<assign name="CopyPurchaseDetails">
                     <bpel:copy>
@@ -83,7 +83,7 @@
 				        <to>$buyResponseVar.content/@id</to>
 				    </copy>
 				</assign>
-                <reply name="Send_BuyConfirmed" operation="buy" partnerLink="BuyerToStore" portType="sto:Store" variable="buyResponseVar"/>
+                <reply name="Send_BuyConfirmed" operation="buy" partnerLink="BuyerToStore" portType="sto:StoreInterface" variable="buyResponseVar"/>
             </sequence>
         </scope>
     </sequence>

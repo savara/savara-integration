@@ -5,11 +5,12 @@
         <active>
             true
         </active>
+        <process-events generate="all"/>
         <provide partnerLink="BuyerToStore">
-            <service name="ns1:StoreService" port="StorePort"/>
+            <service name="ns1:StoreService" port="StoreInterfacePort"/>
         </provide>
-        <invoke partnerLink="StoreToCreditAgency">
-            <service name="ns2:CreditAgencyService" port="CreditAgencyPort"/>
+        <invoke partnerLink="StoreToCreditAgency" usePeer2Peer="false" >
+            <service name="ns2:CreditAgencyService" port="CreditAgencyInterfacePort"/>
         </invoke>
     </process>
 </deploy>

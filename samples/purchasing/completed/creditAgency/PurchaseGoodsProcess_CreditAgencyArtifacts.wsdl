@@ -3,6 +3,6 @@
     <wsdl:import location="PurchaseGoodsProcess_CreditAgency.wsdl" namespace="http://www.jboss.org/examples/creditAgency"/>
     <wsdl:import location="PurchaseGoodsProcess_Store.wsdl" namespace="http://www.jboss.org/examples/store"/>
     <plnk:partnerLinkType name="StoreToCreditAgencyServiceLT">
-        <plnk:role name="CreditAgency" portType="ns1:CreditAgency"/>
+        <plnk:role name="CreditAgencyInterface" portType="ns1:CreditAgencyInterface"/>
     </plnk:partnerLinkType>
 </wsdl:definitions>
