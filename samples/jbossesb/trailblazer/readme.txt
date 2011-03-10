@@ -42,4 +42,5 @@ To run the Trailblazer, follow these steps:
 That's it.  Now you can submit quotes, You will see either a loan request rejected (single email)
 because the score is less than 4, or two emails (one from JMS bank and one from FileBased
 bank) with valid quotes.
-
+NOTE: The current code does not actually send an email. But if you wish to send the real email, then uncomment the relevant lines in the
+esb/src/org/jboss/soa/esb/samples/trailblazer/actions/NotifyCustomerActions.java file, and redeploy the example.

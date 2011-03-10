@@ -53,7 +53,9 @@ public class NotifyCustomerActions extends AbstractActionLifecycle {
 		
 		_logger.debug("preparing to send the quote response via email to customer");
 		ProcessEmail procEmail = new ProcessEmail(email, quoteID, rate, errorCode, ssn);
-		procEmail.sendEmail();
+
+		// Uncomment to actually send an email
+		//procEmail.sendEmail();
 		
 		System.out.println("Sent email to: " +email);
 		
