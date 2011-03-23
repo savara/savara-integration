@@ -42,34 +42,33 @@ More information about how to use this feature can be found in the User Guide.
 			<para>
 When a choreography description has been created, it is possible to generate a BPEL Process (and associated
 WSDL files and deployment descriptor) for each of the participants defined within the choreography.
-To try this out, select the <emphasis>Savara->Generate->WS-BPEL</emphasis> menu item from the popup menu
+To try this out, select the <emphasis>Savara->Generate->Service</emphasis> menu item from the popup menu
 associated with the <filename>PurchaseGoods.cdm</filename>.
 			</para>
 
 			<imageobject>
-				<imagedata fileref="en-US/images/GenerateBPELMenu.jpg" align="center" width="3in" />
+				<imagedata fileref="en-US/images/GenerateServiceMenu.png" align="center" width="4in" />
 			</imageobject>
 
 			<para>
 This will display a dialog listing the possible services that can be generated from this choreography,
-with a proposed Eclipse project name.
+with a proposed Eclipse project name, and the option to select a
+service type (in this case BPEL).
 			</para>
 
 			<imageobject>
-				<imagedata fileref="en-US/images/GenerateBPELDialog.jpg" align="center" width="3in" />
+				<imagedata fileref="en-US/images/GenerateService.png" align="center" width="5in" />
 			</imageobject>
 
 			<para>
-To test out this feature, uncheck the <emphasis>Buyer</emphasis> participant, leave the build system
-as <emphasis>Ant</emphasis>, and
-press the 'Ok' button. This will create a single new project for the <emphasis>Store</emphasis> and
+Press the 'Ok' button and this will create a single a BPEL project for the <emphasis>Store</emphasis> and
 <emphasis>CreditAgency</emphasis> participants.
 			</para>
 
 			<para>
 Each project will contain a single <filename>bpel</filename> folder containing the WS-BPEL process
 definition for the participant, a list of relevant WSDL files and a deployment descriptor file
-for use with RiftSaw. Howeve the WS-BPEL and WSDL files are standard, so can be deployed to any
+for use with RiftSaw. However the WS-BPEL and WSDL files are standard, so can be deployed to any
 WS-BPEL 2.0 compliant engine.
 			</para>
 

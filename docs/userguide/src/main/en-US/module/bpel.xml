@@ -30,27 +30,25 @@ artifacts.
 			<title>Generating the BPEL Process from a Choreography Description</title>
 			<para>
 When the choreography description has been completed, and has no errors, the user should select
-the "SAVARA->Generate->WS-BPEL" menu item from the popup menu associated with the choreography
+the "SAVARA->Generate->Service" menu item from the popup menu associated with the choreography
 description (.cdm) file.
 			</para>
 
 		<imageobject>
-			<imagedata fileref="en-US/images/genbpel1.png" width="4in" />
+			<imagedata fileref="en-US/images/GenerateServiceMenu.png" width="4in" />
 		</imageobject>
 
 			<para>
 When the dialog window is displayed, it will contain the list of services that can be generated,
-along with the project names that will be created. The user can unselect the services they do not 
+along with the project names that will be created, and the target service type for each.
+The user can unselect the services they do not 
 wish to generate (also using the 'Check All' or 'Clear All' buttons).
 			</para>
 
 		<imageobject>
-			<imagedata fileref="en-US/images/genbpel2.png" width="4in" />
+			<imagedata fileref="en-US/images/GenerateService.png" width="5in" />
 		</imageobject>
 
-			<para>
-The user can also select their preferred build system, which will create the relevant build structure.
-		</para>
 		<para>
 If there is a problem with the name of the project select, such as invalid characters used in the name, 
 or the project name already exists, then it will be displayed in red.
