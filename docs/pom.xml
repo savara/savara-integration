@@ -16,16 +16,10 @@
       <version>2.0.0-SNAPSHOT</version>
 	</parent>
   
-  	<profiles>
-		<profile>
-			<id>docs</id>
-		    <modules>
-		      <module>userguide</module>
-			  <module>gettingstartedguide</module>
-			  <module>samplesguide</module>
-		    </modules>
-		</profile>
-	</profiles>
+    <modules>
+	<module>userguide</module>
+	<module>gettingstartedguide</module>
+    </modules>
 
   <pluginRepositories>
     <pluginRepository>

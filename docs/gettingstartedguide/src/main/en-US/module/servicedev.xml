@@ -91,7 +91,7 @@ WS-BPEL 2.0 compliant engine.
 			<para>
 			Therefore a completed version of the deployment descriptor and BPEL process files,
 			for both the creditAgency and store participants, can be found in the
-			<emphasis>purchasing</emphasis> example's <filename>completed</filename> folder.
+			<emphasis>purchasing</emphasis> example's <filename>completed/bpel</filename> folder.
 			</para>
 			
 			<para>
