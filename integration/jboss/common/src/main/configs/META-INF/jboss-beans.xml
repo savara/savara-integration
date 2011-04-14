@@ -5,6 +5,30 @@
         				name="SavaraService">
     <annotation>@org.jboss.aop.microcontainer.aspects.jmx.JMX(name="savara:service=SavaraService", exposedInterface=org.savara.integration.jboss.SavaraServiceMBean.class,registerDirectly=true)</annotation>
     <depends>jboss.messaging.destination:service=Topic,name=tracker</depends>
+    <property name="activityProcessor"><inject bean="ActivityProcessor"/></property>
+  </bean>
+  
+  <bean class="org.savara.common.config.file.FileConfiguration" name="Configuration">
+  </bean>
+  
+  <bean class="org.savara.activity.validator.cdm.CDMActivityValidator" name="Validator1">
+  </bean>
+  
+  <bean class="org.savara.activity.notifier.jms.JMSActivityNotifier" name="Notifier1">
+  	<property name="configuration"><inject bean="Configuration" /></property>
+  </bean>
+  
+  <bean class="org.savara.activity.DefaultActivityProcessor" name="ActivityProcessor">
+  	<property name="validators" >
+		<list name="validators" class="java.util.ArrayList" elementClass="org.savara.activity.ActivityValidator">
+			<inject bean="Validator1" />
+		</list>
+  	</property>
+  	<property name="notifiers" >
+		<list name="notifiers" class="java.util.ArrayList" elementClass="org.savara.activity.ActivityNotifier">
+			<inject bean="Notifier1" />
+		</list>
+  	</property>
   </bean>
 
 </deployment>
