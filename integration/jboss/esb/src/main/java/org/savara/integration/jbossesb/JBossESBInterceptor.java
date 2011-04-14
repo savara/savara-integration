@@ -76,7 +76,7 @@ public class JBossESBInterceptor extends org.jboss.soa.esb.filter.InputOutputFil
 				
 				MessageParameter mp=new MessageParameter();
 				mp.setType(MessageUtils.getMessageType(message));
-				mp.setValue((String)message);
+				mp.setAny((String)message);
 				
 				ia.getParameter().add(mp);
 				
@@ -124,7 +124,7 @@ public class JBossESBInterceptor extends org.jboss.soa.esb.filter.InputOutputFil
 				
 				MessageParameter mp=new MessageParameter();
 				mp.setType(MessageUtils.getMessageType(message));
-				mp.setValue((String)message);
+				mp.setAny((String)message);
 				
 				ia.getParameter().add(mp);
 				

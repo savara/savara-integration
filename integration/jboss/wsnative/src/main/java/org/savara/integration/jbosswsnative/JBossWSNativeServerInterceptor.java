@@ -62,7 +62,7 @@ public class JBossWSNativeServerInterceptor extends AbstractJBossWSNativeInterce
 					
 					MessageParameter mp=new MessageParameter();
 					mp.setType(mesgtype);
-					mp.setValue(getMessage(soapCtx));
+					mp.setAny(getMessage(soapCtx));
 					
 					ia.getParameter().add(mp);
 					
@@ -100,7 +100,7 @@ public class JBossWSNativeServerInterceptor extends AbstractJBossWSNativeInterce
 					
 					MessageParameter mp=new MessageParameter();
 					mp.setType(mesgtype);
-					mp.setValue(getMessage(soapCtx));
+					mp.setAny(getMessage(soapCtx));
 					
 					ia.getParameter().add(mp);
 					
