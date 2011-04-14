@@ -58,11 +58,11 @@ public class SavaraService extends org.jboss.system.ServiceMBeanSupport implemen
 		JMSActivityNotifier notifier=new JMSActivityNotifier();
 		notifier.setConfiguration(config);
 		
-		dap.addActivityNotifier(notifier);
+		dap.getNotifiers().add(notifier);
 		
 		ActivityValidator validator=new CDMActivityValidator();
 		
-		dap.addActivityValidator(validator);
+		dap.getValidators().add(validator);
 		
 		setActivityProcessor(dap);
 	}
