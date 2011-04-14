@@ -21,11 +21,6 @@ import java.util.logging.Logger;
 
 import org.savara.activity.ActivityProcessor;
 import org.savara.activity.ActivityProcessorFactory;
-import org.savara.activity.ActivityValidator;
-import org.savara.activity.DefaultActivityProcessor;
-import org.savara.activity.notifier.jms.JMSActivityNotifier;
-import org.savara.activity.validator.cdm.CDMActivityValidator;
-import org.savara.common.config.file.FileConfiguration;
 
 /**
  * This is the JBoss Savara Service Validator Service managing the Service Validator.
@@ -48,26 +43,11 @@ public class SavaraService extends org.jboss.system.ServiceMBeanSupport implemen
 	 * Service Validation Manager and registering it with JNDI.
 	 */
 	protected void startService() throws Exception {
-		logger.info("Starting Savara Service Validator Manager");
-
-		// Create ActivityProcessor
-		ActivityProcessor dap=new DefaultActivityProcessor();
-		
-		FileConfiguration config=new FileConfiguration();
-		
-		JMSActivityNotifier notifier=new JMSActivityNotifier();
-		notifier.setConfiguration(config);
-		
-		dap.addActivityNotifier(notifier);
-		
-		ActivityValidator validator=new CDMActivityValidator();
-		
-		dap.addActivityValidator(validator);
-		
-		setActivityProcessor(dap);
+		logger.info("Starting SAVARA");
 	}
 	
 	public void setActivityProcessor(ActivityProcessor ap) {
+		// Activity processor configured in META-INF/jboss-beans.xml
 		ActivityProcessorFactory.setActivityProcessor(ap);
 	}
 
@@ -76,6 +56,6 @@ public class SavaraService extends org.jboss.system.ServiceMBeanSupport implemen
 	 * Service Validation Manager and unregistering it from JNDI.
 	 */
 	protected void stopService() throws Exception {
-		logger.info("Stopping Savara Service Validator Manager");
+		logger.info("Stopping SAVARA");
 	}
 }
