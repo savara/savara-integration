@@ -17,12 +17,13 @@
  */
 package org.savara.integration.jbosswsnative;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.xml.namespace.QName;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.savara.activity.ActivityProcessor;
 import org.savara.activity.ActivityProcessorFactory;
 import org.savara.activity.model.ExchangeType;
@@ -31,11 +32,11 @@ import org.savara.activity.model.MessageParameter;
 
 public class JBossWSNativeServerInterceptor extends AbstractJBossWSNativeInterceptor {
 	
-	private static Log logger = LogFactory.getLog(JBossWSNativeServerInterceptor.class);
+	private static Logger logger = Logger.getLogger(JBossWSNativeServerInterceptor.class.getName());
    
 	public JBossWSNativeServerInterceptor() {
-		if (logger.isDebugEnabled()) {
-			logger.debug("JBossWSNativeServerInterceptor created");
+		if (logger.isLoggable(Level.FINE)) {
+			logger.fine("JBossWSNativeServerInterceptor created");
 		}
 	}
    
@@ -70,7 +71,7 @@ public class JBossWSNativeServerInterceptor extends AbstractJBossWSNativeInterce
 				}
 				
 			} catch(Exception e) {
-				logger.error("Failed to report interaction activity", e);
+				logger.log(Level.SEVERE, "Failed to report interaction activity", e);
 			}			
 		}
 
@@ -108,7 +109,7 @@ public class JBossWSNativeServerInterceptor extends AbstractJBossWSNativeInterce
 				}
 				
 			} catch(Exception e) {
-				logger.error("Failed to report interaction activity", e);
+				logger.log(Level.SEVERE, "Failed to report interaction activity", e);
 			}
 		}
 
