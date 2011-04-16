@@ -21,8 +21,9 @@
  */
 package org.savara.integration.jbosswsnative;
 
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPBody;
 import javax.xml.soap.SOAPElement;
@@ -31,11 +32,6 @@ import javax.xml.soap.SOAPFault;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.pi4soa.common.util.NamesUtil;
-import org.pi4soa.common.xml.NameSpaceUtil;
-import org.pi4soa.common.xml.XMLUtils;
 import org.savara.common.util.MessageUtils;
 import org.jboss.ws.core.jaxws.handler.SOAPMessageContextJAXWS;
 import org.jboss.ws.metadata.umdm.ParameterMetaData;
@@ -49,7 +45,7 @@ import org.jboss.wsf.common.handler.GenericSOAPHandler;
  */
 public abstract class AbstractJBossWSNativeInterceptor extends GenericSOAPHandler {
 
-	private static Log logger = LogFactory.getLog(AbstractJBossWSNativeInterceptor.class);
+	private static Logger logger = Logger.getLogger(AbstractJBossWSNativeInterceptor.class.getName());
 
 	/**
 	 * This method returns the message content.
@@ -116,12 +112,14 @@ public abstract class AbstractJBossWSNativeInterceptor extends GenericSOAPHandle
 		if (ret == null) {
 			try {
 				ret = MessageUtils.getMessageType(getMessage(soapCtx));
-				logger.debug("Message type (derived from content)="+ret);
+				if (logger.isLoggable(Level.FINE)) {
+					logger.fine("Message type (derived from content)="+ret);
+				}
 			} catch(Exception e) {
-				logger.error("Failed to get message type from message content", e);
+				logger.log(Level.SEVERE, "Failed to get message type from message content", e);
 			}
-		} else if (logger.isDebugEnabled()) {
-			logger.debug("Message type="+ret);
+		} else if (logger.isLoggable(Level.FINE)) {
+			logger.fine("Message type="+ret);
 		}
 
 		return(ret);
@@ -161,8 +159,8 @@ public abstract class AbstractJBossWSNativeInterceptor extends GenericSOAPHandle
 	public static QName getEndpoint(SOAPMessageContext soapCtx) {
 		QName service=(QName)soapCtx.get(MessageContext.WSDL_SERVICE);
         
-		if (logger.isDebugEnabled()) {
-			logger.debug("Service for endpoint = "+service);
+		if (logger.isLoggable(Level.FINE)) {
+			logger.fine("Service for endpoint = "+service);
 		}
 		
 		if (service == null && soapCtx instanceof SOAPMessageContextJAXWS) {
