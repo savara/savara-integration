@@ -17,8 +17,6 @@
 	</parent>
   
     <modules>
-	<module>userguide</module>
-	<module>gettingstartedguide</module>
     </modules>
 
   <pluginRepositories>
