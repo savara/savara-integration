@@ -116,7 +116,7 @@
 <title>TODO InformalFigure image title empty</title>
           <mediaobject>
             <imageobject>
-              <imagedata fileref="author/download/attachments/3735780/PurchaseGoods.jpg"/>
+              <imagedata fileref="author/download/attachments/3735780/PurchaseGoods.jpg" width="6in" />
             </imageobject>
           </mediaobject>
         </figure>
@@ -145,7 +145,7 @@
 <title>TODO InformalFigure image title empty</title>
             <mediaobject>
               <imageobject>
-                <imagedata fileref="author/download/attachments/3735780/SuccessfulPurchasePostTest.jpg"/>
+                <imagedata fileref="author/download/attachments/3735780/SuccessfulPurchasePostTest.jpg" width="5in"/>
               </imageobject>
             </mediaobject>
           </figure>
@@ -167,7 +167,7 @@
 <title>TODO InformalFigure image title empty</title>
             <mediaobject>
               <imageobject>
-                <imagedata fileref="author/download/attachments/3735780/InvalidPurchasePostTest.jpg"/>
+                <imagedata fileref="author/download/attachments/3735780/InvalidPurchasePostTest.jpg" width="5in"/>
               </imageobject>
             </mediaobject>
           </figure>
@@ -221,7 +221,7 @@
 <title>TODO InformalFigure image title empty</title>
             <mediaobject>
               <imageobject>
-                <imagedata fileref="author/download/attachments/3735780/ExportHTMLMenu.png"/>
+                <imagedata fileref="author/download/attachments/3735780/ExportHTMLMenu.png" width="3in"/>
               </imageobject>
             </mediaobject>
           </figure>
@@ -236,7 +236,7 @@
 <title>TODO InformalFigure image title empty</title>
             <mediaobject>
               <imageobject>
-                <imagedata fileref="author/download/attachments/3735780/ExportHTMLDialog.png"/>
+                <imagedata fileref="author/download/attachments/3735780/ExportHTMLDialog.png" width="3in"/>
               </imageobject>
             </mediaobject>
           </figure>
@@ -255,7 +255,7 @@
 <title>TODO InformalFigure image title empty</title>
             <mediaobject>
               <imageobject>
-                <imagedata fileref="author/download/attachments/3735780/ExportedHTML.png"/>
+                <imagedata fileref="author/download/attachments/3735780/ExportedHTML.png" width="6in"/>
               </imageobject>
             </mediaobject>
           </figure>

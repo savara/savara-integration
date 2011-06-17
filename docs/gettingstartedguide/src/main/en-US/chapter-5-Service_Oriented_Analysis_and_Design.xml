@@ -63,7 +63,7 @@
 <title>TODO InformalFigure image title empty</title>
           <mediaobject>
             <imageobject>
-              <imagedata fileref="author/download/attachments/3735781/ExportBPMNMenu.png"/>
+              <imagedata fileref="author/download/attachments/3735781/ExportBPMNMenu.png" width="3in"/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -104,7 +104,7 @@
 <title>TODO InformalFigure image title empty</title>
           <mediaobject>
             <imageobject>
-              <imagedata fileref="author/download/attachments/3735781/ExportedBPMN.png"/>
+              <imagedata fileref="author/download/attachments/3735781/ExportedBPMN.png" width="6in"/>
             </imageobject>
           </mediaobject>
         </figure>

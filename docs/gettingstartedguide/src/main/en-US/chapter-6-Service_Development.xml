@@ -62,7 +62,7 @@
 <title>TODO InformalFigure image title empty</title>
             <mediaobject>
               <imageobject>
-                <imagedata fileref="author/download/attachments/3735783/GenerateServiceMenu.png"/>
+                <imagedata fileref="author/download/attachments/3735783/GenerateServiceMenu.png" width="3in"/>
               </imageobject>
             </mediaobject>
           </figure>
@@ -79,7 +79,7 @@
 <title>TODO InformalFigure image title empty</title>
             <mediaobject>
               <imageobject>
-                <imagedata fileref="author/download/attachments/3735783/GenerateService.png"/>
+                <imagedata fileref="author/download/attachments/3735783/GenerateService.png" width="5in"/>
               </imageobject>
             </mediaobject>
           </figure>

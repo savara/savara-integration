@@ -222,7 +222,7 @@
 <title>TODO InformalFigure image title empty</title>
           <mediaobject>
             <imageobject>
-              <imagedata fileref="author/download/attachments/3735773/ImportMenu.jpg"/>
+              <imagedata fileref="author/download/attachments/3735773/ImportMenu.jpg" width="3in"/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -242,7 +242,7 @@
 <title>TODO InformalFigure image title empty</title>
           <mediaobject>
             <imageobject>
-              <imagedata fileref="author/download/attachments/3735773/ImportDialog.jpg"/>
+              <imagedata fileref="author/download/attachments/3735773/ImportDialog.jpg" width="3in"/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -263,7 +263,7 @@
 <title>TODO InformalFigure image title empty</title>
           <mediaobject>
             <imageobject>
-              <imagedata fileref="author/download/attachments/3735773/ImportFileDialog.jpg"/>
+              <imagedata fileref="author/download/attachments/3735773/ImportFileDialog.jpg" width="3in"/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -284,7 +284,7 @@
 <title>TODO InformalFigure image title empty</title>
           <mediaobject>
             <imageobject>
-              <imagedata fileref="author/download/attachments/3735773/ImportProjectsDialog.jpg"/>
+              <imagedata fileref="author/download/attachments/3735773/ImportProjectsDialog.jpg" width="3in"/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -295,7 +295,7 @@
 <title>TODO InformalFigure image title empty</title>
           <mediaobject>
             <imageobject>
-              <imagedata fileref="author/download/attachments/3735773/ImportedProject.jpg"/>
+              <imagedata fileref="author/download/attachments/3735773/ImportedProject.jpg" width="3in"/>
             </imageobject>
           </mediaobject>
         </figure>

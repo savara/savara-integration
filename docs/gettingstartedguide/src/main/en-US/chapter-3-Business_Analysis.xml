@@ -26,7 +26,7 @@
 <title>TODO InformalFigure image title empty</title>
           <mediaobject>
             <imageobject>
-              <imagedata fileref="author/download/attachments/3735774/RolesAndRelationships.png"/>
+              <imagedata fileref="author/download/attachments/3735774/RolesAndRelationships.png" width="6in"/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -43,7 +43,7 @@
 <title>TODO InformalFigure image title empty</title>
           <mediaobject>
             <imageobject>
-              <imagedata fileref="author/download/attachments/3735774/ParticipantAndOtherTypes.png"/>
+              <imagedata fileref="author/download/attachments/3735774/ParticipantAndOtherTypes.png" width="3in"/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -89,7 +89,7 @@
 <title>TODO InformalFigure image title empty</title>
           <mediaobject>
             <imageobject>
-              <imagedata fileref="author/download/attachments/3735776/SuccessfulPurchasePreTest.jpg"/>
+              <imagedata fileref="author/download/attachments/3735776/SuccessfulPurchasePreTest.jpg" width="5in"/>
             </imageobject>
           </mediaobject>
         </figure>
